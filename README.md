@@ -12,5 +12,6 @@ gcloud container clusters create \
     --enable-shielded-nodes \
     --shielded-secure-boot \
     --enable-autorepair \
-    --enable-autoupgrade
+    --enable-autoupgrade \
+    --enable-stackdriver-kubernetes
 ```
