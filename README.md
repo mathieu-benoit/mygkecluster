@@ -1,5 +1,7 @@
 # mygkecluster
 
+Based mostly on [Hardening your cluster's security](https://cloud.google.com/kubernetes-engine/docs/how-to/hardening-your-cluster).
+
 ```
 export NODE_SA_NAME=gke-node-sa
 gcloud iam service-accounts create $NODE_SA_NAME \
