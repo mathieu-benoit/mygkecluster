@@ -3,31 +3,46 @@
 Based mostly on [Hardening your cluster's security](https://cloud.google.com/kubernetes-engine/docs/how-to/hardening-your-cluster).
 
 ```
-export NODE_SA_NAME=gke-node-sa
-gcloud iam service-accounts create $NODE_SA_NAME \
-  --display-name "Node Service Account"
-export NODE_SA_EMAIL=$(gcloud iam service-accounts list --format='value(email)' \
-  --filter='displayName:Node Service Account')
-  
-export PROJECT=$(gcloud config get-value project)
-gcloud projects add-iam-policy-binding $PROJECT \
-  --member serviceAccount:$NODE_SA_EMAIL \
-  --role roles/monitoring.metricWriter
-gcloud projects add-iam-policy-binding $PROJECT \
-  --member serviceAccount:$NODE_SA_EMAIL \
-  --role roles/monitoring.viewer
-gcloud projects add-iam-policy-binding $PROJECT \
-  --member serviceAccount:$NODE_SA_EMAIL \
+projectId=FIXME
+region=us-east1
+
+# Setup Project
+projectName=FIXME
+folderId=FIXME
+billingAccountId=FIXME
+gcloud projects create $projectId \
+    --folder $folderId \
+    --name $projectName
+gcloud config set project $projectId
+gcloud beta billing accounts list
+
+gcloud beta billing projects link $projectId \
+    --billing-account $billingAccountId
+
+# Least Privileges Service Account for default node pool
+gcloud services enable cloudresourcemanager.googleapis.com
+saName=FIXME
+saId=$saName@$projectId.iam.gserviceaccount.com
+gcloud iam service-accounts create $saName \
+  --display-name=$saName
+gcloud projects add-iam-policy-binding $projectId \
+  --member "serviceAccount:$saId" \
   --role roles/logging.logWriter
-  
-gcloud projects add-iam-policy-binding $PROJECT \
-  --member serviceAccount:$NODE_SA_EMAIL \
+gcloud projects add-iam-policy-binding $projectId \
+  --member "serviceAccount:$saId" \
+  --role roles/monitoring.metricWriter
+gcloud projects add-iam-policy-binding $projectId \
+  --member "serviceAccount:$saId" \
+  --role roles/monitoring.viewer
+gcloud projects add-iam-policy-binding $projectId \
+  --member "serviceAccount:$saId" \
   --role roles/storage.objectViewer
 
+# Create GKE cluster
 gcloud container clusters create \
-    --service-account $NODE_SA_EMAIL
+    --service-account $saId
     --release-channel rapid \
-    --region \
+    --region $region \
     --local-ssd count 1 \
     --disk-type pd-ssd \
     --machine-type n2d-standard-2 \
