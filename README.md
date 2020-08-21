@@ -34,6 +34,9 @@ gcloud projects add-iam-policy-binding $projectId \
 gcloud projects add-iam-policy-binding $projectId \
   --member "serviceAccount:$saId" \
   --role roles/monitoring.viewer
+  
+# Setup GCR
+gcloud services enable containerregistry.googleapis.com
 gcloud projects add-iam-policy-binding $projectId \
   --member "serviceAccount:$saId" \
   --role roles/storage.objectViewer
