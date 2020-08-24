@@ -45,7 +45,7 @@ gcloud projects add-iam-policy-binding $projectId \
 
 # Create GKE cluster
 gcloud container clusters create \
-    --service-account $saId
+    --service-account $saId \
     --release-channel rapid \
     --region $region \
     --local-ssd count 1 \
@@ -56,6 +56,7 @@ gcloud container clusters create \
     --addons nodelocaldns,networkpolicy \
     --enable-shielded-nodes \
     --shielded-secure-boot \
+    --enable-ip-alias \
     --enable-autorepair \
     --enable-autoupgrade \
     --enable-stackdriver-kubernetes
