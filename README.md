@@ -48,7 +48,6 @@ gcloud container clusters create \
     --service-account $saId \
     --release-channel rapid \
     --region $region \
-    --local-ssd count 1 \
     --disk-type pd-ssd \
     --machine-type n2d-standard-2 \
     --disk-size 256 \
