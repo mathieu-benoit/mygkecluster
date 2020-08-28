@@ -52,7 +52,7 @@ gcloud container clusters create \
     --machine-type n2d-standard-2 \
     --disk-size 256 \
     --image-type cos_containerd \
-    --addons nodelocaldns,networkpolicy \
+    --addons NodeLocalDNS,NetworkPolicy,HttpLoadBalancing \
     --enable-shielded-nodes \
     --shielded-secure-boot \
     --enable-ip-alias \
