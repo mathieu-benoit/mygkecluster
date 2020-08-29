@@ -4,7 +4,7 @@ Based mostly on [Hardening your cluster's security](https://cloud.google.com/kub
 
 ```
 projectId=FIXME
-region=us-east1
+region=us-east4
 
 # Setup Project
 projectName=FIXME
@@ -44,7 +44,7 @@ gcloud projects add-iam-policy-binding $projectId \
   --role roles/storage.objectViewer
 
 # Create GKE cluster
-randomSuffix=$(shuf -i 1000-9999 -n 1)
+randomSuffix=$(shuf -i 100-999 -n 1)
 clusterName=FIXME-$randomSuffix
 gcloud container clusters create $clusterName \
     --service-account $saId \
