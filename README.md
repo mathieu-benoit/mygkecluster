@@ -44,7 +44,9 @@ gcloud projects add-iam-policy-binding $projectId \
   --role roles/storage.objectViewer
 
 # Create GKE cluster
-gcloud container clusters create \
+randomSuffix=$(shuf -i 1000-9999 -n 1)
+clusterName=FIXME-$randomSuffix
+gcloud container clusters create $clusterName \
     --service-account $saId \
     --release-channel rapid \
     --region $region \
