@@ -74,6 +74,7 @@ Here are the exhaustive list of the security best practices with your GKE cluste
 - [Enable Workload Identity](https://cloud.google.com/kubernetes-engine/docs/how-to/workload-identity)
 - [Enable Binary Authorization with GCR](https://cloud.google.com/binary-authorization/docs/overview)
 - [Enable Vulnerability scanning on GCR](https://cloud.google.com/container-registry/docs/vulnerability-scanning)
+- [Application-layer Secrets Encryption](https://cloud.google.com/kubernetes-engine/docs/how-to/encrypting-secrets)
 
 Here are actions you may want to do once your GKE clusters are deployed to help solidify your security posture:
 - [Credential rotation](https://cloud.google.com/kubernetes-engine/docs/how-to/credential-rotation)
