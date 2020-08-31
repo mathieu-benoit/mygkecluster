@@ -69,6 +69,7 @@ Here are the exhaustive list of the security best practices with your GKE cluste
 - [Adding authorized networks for cluster master access](https://cloud.google.com/kubernetes-engine/docs/how-to/authorized-networks)
 - [Nodes auto-upgrades](https://cloud.google.com/kubernetes-engine/docs/concepts/node-auto-upgrades)
 - [Container-Optimized OS](https://cloud.google.com/container-optimized-os/docs/concepts/features-and-benefits)
+- [Using Shielded GKE Nodes](https://cloud.google.com/kubernetes-engine/docs/how-to/shielded-gke-nodes)
 - [RBAC](https://cloud.google.com/kubernetes-engine/docs/how-to/role-based-access-control)
 - [Enable network policy](https://cloud.google.com/kubernetes-engine/docs/how-to/network-policy)
 - [Enable Workload Identity](https://cloud.google.com/kubernetes-engine/docs/how-to/workload-identity)
@@ -77,6 +78,8 @@ Here are the exhaustive list of the security best practices with your GKE cluste
 - [Application-layer Secrets Encryption](https://cloud.google.com/kubernetes-engine/docs/how-to/encrypting-secrets)
 
 Here are actions you may want to do once your GKE clusters are deployed to help solidify your security posture:
+- [Observing your GKE clusters with Google Cloud Ops Suite](https://cloud.google.com/stackdriver/docs/solutions/gke/observing)
+- [Control plane IP rotation](https://cloud.google.com/kubernetes-engine/docs/how-to/ip-rotation)
 - [Credential rotation](https://cloud.google.com/kubernetes-engine/docs/how-to/credential-rotation)
 - [Configure Security Context](https://kubernetes.io/docs/tasks/configure-pod-container/security-context/)
 - [Harden workload isolation with GKE Sandbox](https://cloud.google.com/kubernetes-engine/docs/how-to/sandbox-pods)
