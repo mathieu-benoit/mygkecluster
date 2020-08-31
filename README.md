@@ -1,6 +1,6 @@
 # mygkecluster
 
-Based mostly on [Hardening your cluster's security](https://cloud.google.com/kubernetes-engine/docs/how-to/hardening-your-cluster).
+Based mostly on [Hardening your cluster's security](https://cloud.google.com/kubernetes-engine/docs/how-to/hardening-your-cluster) and [GKE's Security overview](https://cloud.google.com/kubernetes-engine/docs/concepts/security-overview).
 
 ```
 projectId=FIXME
@@ -62,3 +62,20 @@ gcloud container clusters create $clusterName \
     --enable-autoupgrade \
     --enable-stackdriver-kubernetes
 ```
+
+Here are the exhaustive list of the security best practices with your GKE clusters you should look at:
+- [Use least privilege Google service accounts](https://cloud.google.com/kubernetes-engine/docs/how-to/hardening-your-cluster#use_least_privilege_sa)
+- [Creating a Private cluster](https://cloud.google.com/kubernetes-engine/docs/how-to/private-clusters)
+- [Adding authorized networks for cluster master access](https://cloud.google.com/kubernetes-engine/docs/how-to/authorized-networks)
+- [Nodes auto-upgrades](https://cloud.google.com/kubernetes-engine/docs/concepts/node-auto-upgrades)
+- [Container-Optimized OS](https://cloud.google.com/container-optimized-os/docs/concepts/features-and-benefits)
+- [RBAC](https://cloud.google.com/kubernetes-engine/docs/how-to/role-based-access-control)
+- [Enable network policy](https://cloud.google.com/kubernetes-engine/docs/how-to/network-policy)
+- [Enable Workload Identity](https://cloud.google.com/kubernetes-engine/docs/how-to/workload-identity)
+- [Enable Binary Authorization with GCR](https://cloud.google.com/binary-authorization/docs/overview)
+- [Enable Vulnerability scanning on GCR](https://cloud.google.com/container-registry/docs/vulnerability-scanning)
+
+Here are actions you may want to do once your GKE clusters are deployed to help solidify your security posture:
+- [Credential rotation](https://cloud.google.com/kubernetes-engine/docs/how-to/credential-rotation)
+- [Configure Security Context](https://kubernetes.io/docs/tasks/configure-pod-container/security-context/)
+- [Harden workload isolation with GKE Sandbox](https://cloud.google.com/kubernetes-engine/docs/how-to/sandbox-pods)
