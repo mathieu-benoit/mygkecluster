@@ -77,6 +77,10 @@ Here are the exhaustive list of the security best practices with your GKE cluste
 - [Enable Vulnerability scanning on GCR](https://cloud.google.com/container-registry/docs/vulnerability-scanning)
 - [Application-layer Secrets Encryption](https://cloud.google.com/kubernetes-engine/docs/how-to/encrypting-secrets)
 
+Alpha/Beta considerations:
+- [Using network policy logging with Dataplane V2/eBPF](https://cloud.google.com/kubernetes-engine/docs/how-to/network-policy-logging)
+- [Confidential VMs](https://cloud.google.com/blog/products/identity-security/introducing-google-cloud-confidential-computing-with-confidential-vms)
+
 Here are actions you may want to do once your GKE clusters are deployed to help solidify your security posture:
 - [Observing your GKE clusters with Google Cloud Ops Suite](https://cloud.google.com/stackdriver/docs/solutions/gke/observing)
 - [Control plane IP rotation](https://cloud.google.com/kubernetes-engine/docs/how-to/ip-rotation)
