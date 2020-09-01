@@ -82,6 +82,7 @@ Alpha/Beta considerations:
 - [Confidential VMs](https://cloud.google.com/blog/products/identity-security/introducing-google-cloud-confidential-computing-with-confidential-vms)
 
 Here are actions you may want to do once your GKE clusters are deployed to help solidify your security posture:
+- [Having a GitOps approach to deploy your app in GKE](https://www.weave.works/blog/what-is-gitops-really) or for example [Anthos Config Management](https://cloud.google.com/anthos/config-management)
 - [Observing your GKE clusters with Google Cloud Ops Suite](https://cloud.google.com/stackdriver/docs/solutions/gke/observing)
 - [Control plane IP rotation](https://cloud.google.com/kubernetes-engine/docs/how-to/ip-rotation)
 - [Credential rotation](https://cloud.google.com/kubernetes-engine/docs/how-to/credential-rotation)
