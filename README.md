@@ -61,6 +61,10 @@ gcloud container clusters create $clusterName \
     --enable-autorepair \
     --enable-autoupgrade \
     --enable-stackdriver-kubernetes
+
+# Get GKE cluster kubeconfig
+gcloud container clusters get-credentials $clusterName \
+    --region $region
 ```
 
 Here are the exhaustive list of the security best practices with your GKE clusters you should look at:
