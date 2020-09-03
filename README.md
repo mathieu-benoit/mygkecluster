@@ -54,7 +54,8 @@ gcloud container clusters create $clusterName \
     --machine-type n2d-standard-2 \
     --disk-size 256 \
     --image-type cos_containerd \
-    --addons NodeLocalDNS,NetworkPolicy,HttpLoadBalancing \
+    --enable-network-policy \
+    --addons NodeLocalDNS,HttpLoadBalancing \
     --enable-shielded-nodes \
     --shielded-secure-boot \
     --enable-ip-alias \
