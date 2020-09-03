@@ -63,7 +63,9 @@ gcloud container clusters create $clusterName \
     --enable-autoupgrade \
     --enable-stackdriver-kubernetes \
     --max-pods-per-node 30 \
-    --default-max-pods-per-node 30
+    --default-max-pods-per-node 30 \
+    --services-ipv4-cidr '/25' \
+    --cluster-ipv4-cidr '/20'
 
 # Get GKE cluster kubeconfig
 gcloud container clusters get-credentials $clusterName \
