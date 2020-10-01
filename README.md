@@ -66,7 +66,10 @@ gcloud container clusters create $clusterName \
     --max-pods-per-node 30 \
     --default-max-pods-per-node 30 \
     --services-ipv4-cidr '/25' \
-    --cluster-ipv4-cidr '/20'
+    --cluster-ipv4-cidr '/20' \
+    --enable-master-authorized-networks \
+    --enable-private-nodes \
+    --enable-private-endpoint
 
 # Get GKE cluster kubeconfig
 gcloud container clusters get-credentials $clusterName \
