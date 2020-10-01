@@ -48,6 +48,7 @@ randomSuffix=$(shuf -i 100-999 -n 1)
 clusterName=FIXME-$randomSuffix
 gcloud container clusters create $clusterName \
     --service-account $saId \
+    --workload-metadata-from-node SECURE \
     --release-channel rapid \
     --region $region \
     --disk-type pd-ssd \
