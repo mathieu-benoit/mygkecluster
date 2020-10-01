@@ -101,5 +101,6 @@ Here are actions you may want to do once your GKE clusters are deployed to help 
 - + Service Mesh - FIXME
 
 Complementary resources:
+- [The Unofficial Google Kubernetes Engine (GKE) Security Guide](https://gkesecurity.guide/)
 - [Best practices for enterprise multi-tenancy with GKE](https://cloud.google.com/kubernetes-engine/docs/best-practices/enterprise-multitenancy)
 - [Security blueprint: PCI on GKE](https://cloud.google.com/architecture/blueprints/gke-pci-dss-blueprint)
