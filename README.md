@@ -5,6 +5,8 @@ Based mostly on [Hardening your cluster's security](https://cloud.google.com/kub
 ```
 projectId=FIXME
 region=us-east4
+randomSuffix=$(shuf -i 100-999 -n 1)
+clusterName=FIXME-$randomSuffix
 
 # Setup Project
 projectName=FIXME
@@ -19,12 +21,11 @@ gcloud beta billing accounts list
 gcloud beta billing projects link $projectId \
     --billing-account $billingAccountId
 
-# Least Privileges Service Account for default node pool
+# Least Privilege Service Account for default node pool
 gcloud services enable cloudresourcemanager.googleapis.com
-saName=FIXME
-saId=$saName@$projectId.iam.gserviceaccount.com
-gcloud iam service-accounts create $saName \
-  --display-name=$saName
+saId=$clusterName@$projectId.iam.gserviceaccount.com
+gcloud iam service-accounts create $clusterName \
+  --display-name=$clusterName
 gcloud projects add-iam-policy-binding $projectId \
   --member "serviceAccount:$saId" \
   --role roles/logging.logWriter
@@ -44,11 +45,9 @@ gcloud projects add-iam-policy-binding $projectId \
   --role roles/storage.objectViewer
 
 # Create GKE cluster
-randomSuffix=$(shuf -i 100-999 -n 1)
-clusterName=FIXME-$randomSuffix
 gcloud container clusters create $clusterName \
     --service-account $saId \
-    --workload-metadata-from-node SECURE \
+    --workload-pool=$projectId.svc.id.goog \
     --release-channel rapid \
     --region $region \
     --disk-type pd-ssd \
