@@ -8,20 +8,20 @@ region=us-east4
 randomSuffix=$(shuf -i 100-999 -n 1)
 clusterName=FIXME-$randomSuffix
 
-# Setup Project
+## Setup Project
 projectName=FIXME
 folderId=FIXME
+# Get the billingAccountId from `gcloud beta billing accounts list`
 billingAccountId=FIXME
 gcloud projects create $projectId \
     --folder $folderId \
     --name $projectName
 gcloud config set project $projectId
-gcloud beta billing accounts list
-
 gcloud beta billing projects link $projectId \
     --billing-account $billingAccountId
+projectNumber="$(gcloud projects describe $projectId --format='get(projectNumber)')"
 
-# Least Privilege Service Account for default node pool
+## Least Privilege Service Account for default node pool
 gcloud services enable cloudresourcemanager.googleapis.com
 saId=$clusterName@$projectId.iam.gserviceaccount.com
 gcloud iam service-accounts create $clusterName \
@@ -36,7 +36,7 @@ gcloud projects add-iam-policy-binding $projectId \
   --member "serviceAccount:$saId" \
   --role roles/monitoring.viewer
   
-# Setup GCR
+## Setup GCR
 gcloud services enable containerregistry.googleapis.com
 gcloud services enable containeranalysis.googleapis.com
 gcloud services enable containerscanning.googleapis.com
@@ -44,7 +44,10 @@ gcloud projects add-iam-policy-binding $projectId \
   --member "serviceAccount:$saId" \
   --role roles/storage.objectViewer
 
-# Create GKE cluster
+## Create GKE cluster
+gcloud services enable container.googleapis.com
+# Delete the default compute engine service account if you don't have have the Org policy iam.automaticIamGrantsForDefaultServiceAccounts in place
+gcloud iam service-accounts delete $projectNumber-compute@developer.gserviceaccount.com --quiet
 gcloud container clusters create $clusterName \
     --service-account $saId \
     --workload-pool=$projectId.svc.id.goog \
@@ -67,7 +70,7 @@ gcloud container clusters create $clusterName \
     --services-ipv4-cidr '/25' \
     --cluster-ipv4-cidr '/20'
 
-# Get GKE cluster kubeconfig
+## Get GKE cluster kubeconfig
 gcloud container clusters get-credentials $clusterName \
     --region $region
 ```
