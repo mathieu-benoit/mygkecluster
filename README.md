@@ -4,7 +4,7 @@ Based mostly on [Hardening your cluster's security](https://cloud.google.com/kub
 
 ```
 projectId=FIXME
-region=us-east4
+zone=us-east4-a
 clusterName=FIXME-$randomSuffix
 
 ## Setup Project
@@ -51,7 +51,7 @@ gcloud container clusters create $clusterName \
     --service-account $saId \
     --workload-pool=$projectId.svc.id.goog \
     --release-channel rapid \
-    --region $region \
+    --zone $zone \
     --disk-type pd-ssd \
     --machine-type n2d-standard-2 \
     --disk-size 256 \
