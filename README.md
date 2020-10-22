@@ -42,6 +42,12 @@ gcloud services enable containerscanning.googleapis.com
 gcloud projects add-iam-policy-binding $projectId \
   --member "serviceAccount:$saId" \
   --role roles/storage.objectViewer
+# To get the GCS backend, we need to manually push a first image
+gcloud auth configure-docker gcr.io
+(echo 'FROM scratch'; echo 'LABEL maintainer=scratch') | docker build -t gcr.io/$projectId/scratch -
+docker push gcr.io/$projectId/scratch
+docker rmi gcr.io/$projectId/scratch
+gcloud container images delete gcr.io/$projectId/scractch --quiet
 
 ## Create GKE cluster
 gcloud services enable container.googleapis.com
