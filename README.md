@@ -5,18 +5,17 @@ Based mostly on [Hardening your cluster's security](https://cloud.google.com/kub
 ```
 projectId=FIXME
 region=us-east4
-randomSuffix=$(shuf -i 100-999 -n 1)
 clusterName=FIXME-$randomSuffix
 
 ## Setup Project
 projectName=FIXME
 folderId=FIXME
-# Get the billingAccountId from `gcloud beta billing accounts list`
-billingAccountId=FIXME
 gcloud projects create $projectId \
     --folder $folderId \
     --name $projectName
 gcloud config set project $projectId
+# Get the billingAccountId from `gcloud beta billing accounts list`
+billingAccountId=FIXME
 gcloud beta billing projects link $projectId \
     --billing-account $billingAccountId
 projectNumber="$(gcloud projects describe $projectId --format='get(projectNumber)')"
