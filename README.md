@@ -47,10 +47,11 @@ gcloud projects add-iam-policy-binding $projectId \
   --role roles/storage.objectViewer
 # To get the GCS backend, we need to manually push a first image
 gcloud auth configure-docker gcr.io
-(echo 'FROM scratch'; echo 'LABEL maintainer=scratch') | docker build -t gcr.io/$projectId/scratch -
-docker push gcr.io/$projectId/scratch
-docker rmi gcr.io/$projectId/scratch
-gcloud container images delete gcr.io/$projectId/scractch --quiet
+scratchImageName=gcr.io/$projectId/scratch
+(echo 'FROM scratch'; echo 'LABEL maintainer=scratch') | docker build -t $scratchImageName -
+docker push $scratchImageName
+docker rmi $scratchImageName
+gcloud container images delete $scratchImageName --quiet
 
 ## Create GKE cluster
 gcloud services enable container.googleapis.com
