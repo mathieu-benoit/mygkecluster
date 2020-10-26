@@ -3,12 +3,14 @@
 Based mostly on [Hardening your cluster's security](https://cloud.google.com/kubernetes-engine/docs/how-to/hardening-your-cluster) and [GKE's Security overview](https://cloud.google.com/kubernetes-engine/docs/concepts/security-overview).
 
 ```
-projectId=FIXME
+projectName=FIXME
+randomSuffix=$(shuf -i 100-999 -n 1)
+projectId=$projectName-$randomSuffix
 zone=us-east4-a
-clusterName=FIXME-$randomSuffix
+clusterName=$projectName
 
 ## Setup Project
-projectName=FIXME
+
 folderId=FIXME
 gcloud projects create $projectId \
     --folder $folderId \
