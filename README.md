@@ -24,17 +24,18 @@ projectNumber="$(gcloud projects describe $projectId --format='get(projectNumber
 
 ## Least Privilege Service Account for default node pool
 gcloud services enable cloudresourcemanager.googleapis.com
-saId=$clusterName@$projectId.iam.gserviceaccount.com
-gcloud iam service-accounts create $clusterName \
-  --display-name=$clusterName
+gkeSaName=$clusterName-sa
+gkeSaId=$gkeSaName@$projectId.iam.gserviceaccount.com
+gcloud iam service-accounts create $gkeSaName \
+  --display-name=$gkeSaName
 gcloud projects add-iam-policy-binding $projectId \
-  --member "serviceAccount:$saId" \
+  --member "serviceAccount:$gkeSaId" \
   --role roles/logging.logWriter
 gcloud projects add-iam-policy-binding $projectId \
-  --member "serviceAccount:$saId" \
+  --member "serviceAccount:$gkeSaId" \
   --role roles/monitoring.metricWriter
 gcloud projects add-iam-policy-binding $projectId \
-  --member "serviceAccount:$saId" \
+  --member "serviceAccount:$gkeSaId" \
   --role roles/monitoring.viewer
   
 ## Setup GCR
@@ -42,7 +43,7 @@ gcloud services enable containerregistry.googleapis.com
 gcloud services enable containeranalysis.googleapis.com
 gcloud services enable containerscanning.googleapis.com
 gcloud projects add-iam-policy-binding $projectId \
-  --member "serviceAccount:$saId" \
+  --member "serviceAccount:$gkeSaId" \
   --role roles/storage.objectViewer
 # To get the GCS backend, we need to manually push a first image
 gcloud auth configure-docker gcr.io
@@ -56,7 +57,7 @@ gcloud services enable container.googleapis.com
 # Delete the default compute engine service account if you don't have have the Org policy iam.automaticIamGrantsForDefaultServiceAccounts in place
 gcloud iam service-accounts delete $projectNumber-compute@developer.gserviceaccount.com --quiet
 gcloud container clusters create $clusterName \
-    --service-account $saId \
+    --service-account $gkeSaId \
     --workload-pool=$projectId.svc.id.goog \
     --release-channel rapid \
     --zone $zone \
