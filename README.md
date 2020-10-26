@@ -81,7 +81,7 @@ gcloud container clusters create $clusterName \
 
 ## Get GKE cluster kubeconfig
 gcloud container clusters get-credentials $clusterName \
-    --region $region
+    --zone $zone
 ```
 
 Here are the exhaustive list of the security best practices with your GKE clusters you should look at:
