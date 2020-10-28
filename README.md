@@ -87,22 +87,20 @@ gcloud container clusters get-credentials $clusterName \
 ```
 
 Here are the exhaustive list of the security best practices with your GKE clusters you should look at:
-- [Use least privilege Google service accounts](https://cloud.google.com/kubernetes-engine/docs/how-to/hardening-your-cluster#use_least_privilege_sa)
-- [Creating a Private cluster](https://cloud.google.com/kubernetes-engine/docs/how-to/private-clusters)
-- [Adding authorized networks for cluster master access](https://cloud.google.com/kubernetes-engine/docs/how-to/authorized-networks)
-- [Nodes auto-upgrades](https://cloud.google.com/kubernetes-engine/docs/concepts/node-auto-upgrades)
-- [Container-Optimized OS](https://cloud.google.com/container-optimized-os/docs/concepts/features-and-benefits)
-- [Using Shielded GKE Nodes](https://cloud.google.com/kubernetes-engine/docs/how-to/shielded-gke-nodes)
-- [RBAC](https://cloud.google.com/kubernetes-engine/docs/how-to/role-based-access-control)
-- [Enable network policy](https://cloud.google.com/kubernetes-engine/docs/how-to/network-policy)
-- [Enable Workload Identity](https://cloud.google.com/kubernetes-engine/docs/how-to/workload-identity)
-- [Enable Binary Authorization with GCR](https://cloud.google.com/binary-authorization/docs/overview)
-- [Enable Vulnerability scanning on GCR](https://cloud.google.com/container-registry/docs/vulnerability-scanning)
-- [Application-layer Secrets Encryption](https://cloud.google.com/kubernetes-engine/docs/how-to/encrypting-secrets)
-
-Alpha/Beta considerations:
-- [Using network policy logging with Dataplane V2/eBPF](https://cloud.google.com/kubernetes-engine/docs/how-to/network-policy-logging)
-- [Confidential VMs](https://cloud.google.com/blog/products/identity-security/introducing-google-cloud-confidential-computing-with-confidential-vms)
+- [X] [Use least privilege Google service accounts](https://cloud.google.com/kubernetes-engine/docs/how-to/hardening-your-cluster#use_least_privilege_sa)
+- [ ] [Creating a Private cluster](https://cloud.google.com/kubernetes-engine/docs/how-to/private-clusters)
+- [ ] [Adding authorized networks for cluster master access](https://cloud.google.com/kubernetes-engine/docs/how-to/authorized-networks)
+- [X] [Nodes auto-upgrades](https://cloud.google.com/kubernetes-engine/docs/concepts/node-auto-upgrades)
+- [X] [Container-Optimized OS](https://cloud.google.com/container-optimized-os/docs/concepts/features-and-benefits)
+- [X] [Using Shielded GKE Nodes](https://cloud.google.com/kubernetes-engine/docs/how-to/shielded-gke-nodes)
+- [ ] [RBAC](https://cloud.google.com/kubernetes-engine/docs/how-to/role-based-access-control)
+- [X] [Enable network policy](https://cloud.google.com/kubernetes-engine/docs/how-to/network-policy)
+- [X] [Enable Workload Identity](https://cloud.google.com/kubernetes-engine/docs/how-to/workload-identity)
+- [ ] [Enable Binary Authorization with GCR](https://cloud.google.com/binary-authorization/docs/overview)
+- [X] [Enable Vulnerability scanning on GCR](https://cloud.google.com/container-registry/docs/vulnerability-scanning)
+- [ ] [Application-layer Secrets Encryption](https://cloud.google.com/kubernetes-engine/docs/how-to/encrypting-secrets)
+- [ ] [(alpha) Using network policy logging with Dataplane V2/eBPF](https://cloud.google.com/kubernetes-engine/docs/how-to/network-policy-logging)
+- [X] [(beta) Confidential VMs](https://cloud.google.com/blog/products/identity-security/introducing-google-cloud-confidential-computing-with-confidential-vms)
 
 Here are actions you may want to do once your GKE clusters are deployed to help solidify your security posture:
 - [Having a GitOps approach to deploy your app in GKE](https://www.weave.works/blog/what-is-gitops-really) or for example [Anthos Config Management](https://cloud.google.com/anthos/config-management)
