@@ -57,7 +57,9 @@ gcloud container images delete $scratchImageName --quiet
 gcloud services enable container.googleapis.com
 # Delete the default compute engine service account if you don't have have the Org policy iam.automaticIamGrantsForDefaultServiceAccounts in place
 gcloud iam service-accounts delete $projectNumber-compute@developer.gserviceaccount.com --quiet
-gcloud container clusters create $clusterName \
+# TODO: remove `beta` once confidential computing is GA.
+gcloud beta container clusters create $clusterName \
+    --enable-confidential-nodes \
     --service-account $gkeSaId \
     --workload-pool=$projectId.svc.id.goog \
     --release-channel rapid \
