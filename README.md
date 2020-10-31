@@ -53,6 +53,19 @@ docker push $scratchImageName
 docker rmi $scratchImageName
 gcloud container images delete $scratchImageName --quiet
 
+## Setup Binary Authorization
+gcloud services enable binaryauthorization.googleapis.com
+cat > policy.yaml << EOF
+admissionWhitelistPatterns:
+- namePattern: gcr.io/$projectId/*
+defaultAdmissionRule:
+  enforcementMode: ENFORCED_BLOCK_AND_AUDIT_LOG
+  evaluationMode: ALWAYS_DENY
+globalPolicyEvaluationMode: ENABLE
+name: projects/$projectId/policy
+EOF
+gcloud container binauthz policy import policy.yaml
+
 ## Create GKE cluster
 gcloud services enable container.googleapis.com
 # Delete the default compute engine service account if you don't have have the Org policy iam.automaticIamGrantsForDefaultServiceAccounts in place
