@@ -60,6 +60,7 @@ gcloud iam service-accounts delete $projectNumber-compute@developer.gserviceacco
 # TODO: remove `beta` once confidential computing is GA.
 gcloud beta container clusters create $clusterName \
     --enable-confidential-nodes \
+    --enable-binauthz \
     --service-account $gkeSaId \
     --workload-pool=$projectId.svc.id.goog \
     --release-channel rapid \
