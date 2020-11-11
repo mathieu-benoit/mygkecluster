@@ -28,15 +28,8 @@ gkeSaName=$clusterName-sa
 gkeSaId=$gkeSaName@$projectId.iam.gserviceaccount.com
 gcloud iam service-accounts create $gkeSaName \
   --display-name=$gkeSaName
-gcloud projects add-iam-policy-binding $projectId \
-  --member "serviceAccount:$gkeSaId" \
-  --role roles/logging.logWriter
-gcloud projects add-iam-policy-binding $projectId \
-  --member "serviceAccount:$gkeSaId" \
-  --role roles/monitoring.metricWriter
-gcloud projects add-iam-policy-binding $projectId \
-  --member "serviceAccount:$gkeSaId" \
-  --role roles/monitoring.viewer
+roles="roles/logging.logWriter roles/monitoring.metricWriter roles/monitoring.viewer"
+for r in $roles; do gcloud projects add-iam-policy-binding $projectId --member "serviceAccount:$saId" --role $r; done
   
 ## Setup GCR
 gcloud services enable containerregistry.googleapis.com
