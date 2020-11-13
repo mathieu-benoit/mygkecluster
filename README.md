@@ -22,6 +22,11 @@ gcloud beta billing projects link $projectId \
     --billing-account $billingAccountId
 projectNumber="$(gcloud projects describe $projectId --format='get(projectNumber)')"
 
+# Protect against project deletion
+gcloud alpha resource-manager liens create \
+    --restrictions=resourcemanager.projects.delete \
+    --reason="Avoid deletion."
+
 ## Least Privilege Service Account for default node pool
 gcloud services enable cloudresourcemanager.googleapis.com
 gkeSaName=$clusterName-sa
