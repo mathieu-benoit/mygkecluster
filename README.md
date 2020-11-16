@@ -6,6 +6,7 @@ Based mostly on [Hardening your cluster's security](https://cloud.google.com/kub
 projectName=mygke
 randomSuffix=$(shuf -i 100-999 -n 1)
 projectId=$projectName-$randomSuffix
+region=us-east4
 zone=us-east4-a
 clusterName=$projectName
 
@@ -34,28 +35,26 @@ gkeSaId=$gkeSaName@$projectId.iam.gserviceaccount.com
 gcloud iam service-accounts create $gkeSaName \
   --display-name=$gkeSaName
 roles="roles/logging.logWriter roles/monitoring.metricWriter roles/monitoring.viewer"
-for r in $roles; do gcloud projects add-iam-policy-binding $projectId --member "serviceAccount:$saId" --role $r; done
+for r in $roles; do gcloud projects add-iam-policy-binding $projectId --member "serviceAccount:$gkeSaId" --role $r; done
   
-## Setup GCR
-gcloud services enable containerregistry.googleapis.com
+## Setup Container Registry
+gcloud services enable artifactregistry.googleapis.com
+containerRegistryName=containers
+gcloud artifacts repositories create $containerRegistryName \
+    --location $region \
+    --repository-format docker
 gcloud services enable containeranalysis.googleapis.com
 gcloud services enable containerscanning.googleapis.com
-gcloud projects add-iam-policy-binding $projectId \
-  --member "serviceAccount:$gkeSaId" \
-  --role roles/storage.objectViewer
-# To get the GCS backend, we need to manually push a first image (you need to have Docker installed locally)
-gcloud auth configure-docker gcr.io --quiet
-scratchImageName=gcr.io/$projectId/scratch
-(echo 'FROM scratch'; echo 'LABEL maintainer=scratch') | docker build -t $scratchImageName -
-docker push $scratchImageName
-docker rmi $scratchImageName
-gcloud container images delete $scratchImageName --quiet
+gcloud artifacts repositories add-iam-policy-binding $containerRegistryName \
+    --location $region \
+    --member "serviceAccount:$gkeSaId" \
+    --role roles/artifactregistry.reader
 
 ## Setup Binary Authorization
 gcloud services enable binaryauthorization.googleapis.com
 cat > policy.yaml << EOF
 admissionWhitelistPatterns:
-- namePattern: gcr.io/$projectId/*
+- namePattern: $region-docker.pkg.dev/$projectId/$containerRegistryName/*
 defaultAdmissionRule:
   enforcementMode: ENFORCED_BLOCK_AND_AUDIT_LOG
   evaluationMode: ALWAYS_DENY
@@ -108,8 +107,8 @@ Here are the exhaustive list of the security best practices with your GKE cluste
 - [ ] [RBAC](https://cloud.google.com/kubernetes-engine/docs/how-to/role-based-access-control)
 - [X] [Enable network policy](https://cloud.google.com/kubernetes-engine/docs/how-to/network-policy)
 - [X] [Enable Workload Identity](https://cloud.google.com/kubernetes-engine/docs/how-to/workload-identity)
-- [ ] [Enable Binary Authorization with GCR](https://cloud.google.com/binary-authorization/docs/overview)
-- [X] [Enable Vulnerability scanning on GCR](https://cloud.google.com/container-registry/docs/vulnerability-scanning)
+- [ ] [Enable Binary Authorization](https://cloud.google.com/binary-authorization/docs/overview)
+- [X] [Enable Vulnerability scanning on container registry](https://cloud.google.com/container-registry/docs/vulnerability-scanning)
 - [ ] [Application-layer Secrets Encryption](https://cloud.google.com/kubernetes-engine/docs/how-to/encrypting-secrets)
 - [ ] [(alpha) Using network policy logging with Dataplane V2/eBPF](https://cloud.google.com/kubernetes-engine/docs/how-to/network-policy-logging)
 - [X] [(beta) Confidential VMs](https://cloud.google.com/blog/products/identity-security/introducing-google-cloud-confidential-computing-with-confidential-vms)
