@@ -130,3 +130,4 @@ Complementary resources:
 - [The Unofficial Google Kubernetes Engine (GKE) Security Guide](https://gkesecurity.guide/)
 - [Best practices for enterprise multi-tenancy with GKE](https://cloud.google.com/kubernetes-engine/docs/best-practices/enterprise-multitenancy)
 - [Security blueprint: PCI on GKE](https://cloud.google.com/architecture/blueprints/gke-pci-dss-blueprint)
+- [Security in KubeCon Europe 2020](https://blog.aquasec.com/kubecon-2020-europe)
