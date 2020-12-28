@@ -50,10 +50,10 @@ deny[msg] {
     msg = sprintf("Line %d: Avoid using 'sudo' command: %s", [i, val])
 }
 
-# Any user
+# any user
 any_user {
     input[i].Cmd == "user"
- }
+}
 
 deny[msg] {
     not any_user
@@ -68,8 +68,8 @@ forbidden_users = [
 ]
 
 deny[msg] {
-    input[i].Cmd == "user"
+    any_user
     val := input[i].Value
-    contains(lower(val[_]), forbidden_users[_])
-    msg = sprintf("Line %d: Do not run as root: %s", [i, val])
+    contains(forbidden_users[_], lower(val[_]))
+    msg = sprintf("Line %d: Do not run as root: %s", [i, val[_]])
 }
