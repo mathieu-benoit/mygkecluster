@@ -1,3 +1,5 @@
+package main
+
 # latest tag
 deny[msg] {
     input[i].Cmd == "from"
