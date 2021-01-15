@@ -14,3 +14,6 @@ terraform {
 
   required_version = "~> 0.14"
 }
+
+data "google_project" "project" {
+}

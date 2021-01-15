@@ -10,6 +10,27 @@ Based mostly on [Hardening your cluster's security](https://cloud.google.com/kub
 - Install `kubectl`
 - Install `docker`
 
+```
+projectName=mygke
+randomSuffix=$(shuf -i 100-999 -n 1)
+projectId=$projectName-$randomSuffix
+region=us-east4
+zone=us-east4-a
+clusterName=$projectName
+
+## Setup Project
+
+folderId=FIXME
+gcloud projects create $projectId \
+    --folder $folderId \
+    --name $projectName
+gcloud config set project $projectId
+# Get the billingAccountId from `gcloud beta billing accounts list`
+billingAccountId=FIXME
+gcloud beta billing projects link $projectId \
+    --billing-account $billingAccountId
+```
+
 ## By `terraform`
 
 ```
