@@ -1,6 +1,6 @@
 # https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/container_cluster
 resource "google_container_cluster" "cluster" {
-  name     = "gke-name-FIXME"
+  name     = "gke-name-fixme"
   location = var.location
 
   remove_default_node_pool = true
@@ -9,7 +9,7 @@ resource "google_container_cluster" "cluster" {
 
 # https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/container_node_pool
 resource "google_container_node_pool" "default-nodepool" {
-  name       = "${google_container_cluster.primary.name}-node-pool"
+  name       = "default-pool"
   location   = var.location
   cluster    = google_container_cluster.cluster.name
   node_count = var.gke_num_nodes
