@@ -1,27 +1,17 @@
-resource "google_container_cluster" "primary" {
+# https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/container_cluster
+resource "google_container_cluster" "cluster" {
   name     = "${var.project_id}-gke"
-  location = var.region
+  location = var.location
 
   remove_default_node_pool = true
   initial_node_count       = 1
-
-  network    = google_compute_network.vpc.name
-  subnetwork = google_compute_subnetwork.subnet.name
-
-  master_auth {
-    username = var.gke_username
-    password = var.gke_password
-
-    client_certificate_config {
-      issue_client_certificate = false
-    }
-  }
 }
 
-resource "google_container_node_pool" "primary_nodes" {
+# https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/container_node_pool
+resource "google_container_node_pool" "default-nodepool" {
   name       = "${google_container_cluster.primary.name}-node-pool"
-  location   = var.region
-  cluster    = google_container_cluster.primary.name
+  location   = var.location
+  cluster    = google_container_cluster.cluster.name
   node_count = var.gke_num_nodes
 
   node_config {
@@ -30,13 +20,7 @@ resource "google_container_node_pool" "primary_nodes" {
       "https://www.googleapis.com/auth/monitoring",
     ]
 
-    labels = {
-      env = var.project_id
-    }
-
-    # preemptible  = true
-    machine_type = "n1-standard-1"
-    tags         = ["gke-node", "${var.project_id}-gke"]
+    machine_type = var.gke_machine_type
     metadata = {
       disable-legacy-endpoints = "true"
     }
