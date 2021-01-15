@@ -1,5 +1,5 @@
-variable "folder_id" {
-  description = "folder id of the project"
+variable "project_id" {
+  description = "id of the project"
 }
 
 variable "location" {

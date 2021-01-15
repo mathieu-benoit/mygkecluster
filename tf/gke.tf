@@ -1,6 +1,6 @@
 # https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/container_cluster
 resource "google_container_cluster" "cluster" {
-  name     = "${var.project_id}-gke"
+  name     = "gke-name-FIXME"
   location = var.location
 
   remove_default_node_pool = true

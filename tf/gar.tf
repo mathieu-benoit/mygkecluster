@@ -4,7 +4,7 @@ resource "google_artifact_registry_repository" "container-images-repo" {
 
   location = var.location
   repository_id = "container-images"
-  format = "DOCKER"
+  format = "docker"
 }
 
 resource "google_artifact_registry_repository" "helm-charts-repo" {
@@ -12,7 +12,7 @@ resource "google_artifact_registry_repository" "helm-charts-repo" {
 
   location = var.location
   repository_id = "helm-charts"
-  format = "DOCKER"
+  format = "docker"
 }
 
 resource "google_artifact_registry_repository" "rego-files-repo" {
@@ -20,5 +20,5 @@ resource "google_artifact_registry_repository" "rego-files-repo" {
 
   location = var.location
   repository_id = "rego-files"
-  format = "DOCKER"
+  format = "docker"
 }

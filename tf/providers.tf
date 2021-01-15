@@ -1,6 +1,6 @@
 terraform {
   required_providers {
-    # https://github.com/hashicorp/terraform-provider-google
+    # https://registry.terraform.io/providers/hashicorp/google/latest/docs/guides/provider_reference
     google = {
       source  = "hashicorp/google"
       version = "3.52.0"
