@@ -30,3 +30,14 @@ variable "project_services" {
     ]
     description = "The GCP APIs that should be enabled in this project."
 }
+
+variable "gke_sa_roles" {
+    type = list
+
+    default = [
+        "roles/logging.logWriter",
+        "roles/monitoring.metricWriter",
+        "roles/monitoring.viewer",
+    ]
+    description = "List of the default IAM roles to attach to the service account on the GKE Nodes."
+}

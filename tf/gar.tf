@@ -22,3 +22,12 @@ resource "google_artifact_registry_repository" "rego-files-repo" {
     repository_id = "rego-files"
     format = "DOCKER"
 }
+
+resource "google_artifact_registry_repository_iam_member" "test-iam" {
+  provider = google-beta
+
+  location = var.location
+  repository = google_artifact_registry_repository.container-images-repo.name
+  role   = "roles/artifactregistry.reader"
+  member = format("serviceAccount:%s", google_service_account.gke.email)
+}
