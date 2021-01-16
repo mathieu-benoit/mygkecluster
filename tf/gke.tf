@@ -75,3 +75,17 @@ resource "google_container_node_pool" "default-nodepool" {
         }
     }
 }
+
+# https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/binary_authorization_policy
+resource "google_binary_authorization_policy" "policy" {
+    admission_whitelist_patterns {
+        name_pattern = "$region-docker.pkg.dev/$projectId/$containerRegistryName/*"
+    }
+
+    default_admission_rule {
+        evaluation_mode  = "ALWAYS_DENY"
+        enforcement_mode = "ENFORCED_BLOCK_AND_AUDIT_LOG"
+    }
+
+    global_policy_evaluation_mode = "ENABLE"
+}
