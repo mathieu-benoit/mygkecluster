@@ -1,30 +1,11 @@
 # https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/google_project_service
-resource "google_project_service" "container" {
-  service = "container.googleapis.com"
+// Enable required services on the project
+resource "google_project_service" "service" {
+    count   = length(var.project_services)
+    service = element(var.project_services, count.index)
 
-  disable_on_destroy = false
-}
-
-resource "google_project_service" "cloudresourcemanager" {
-  service = "cloudresourcemanager.googleapis.com"
-
-  disable_on_destroy = false
-}
-
-resource "google_project_service" "artifactregistry" {
-  service = "artifactregistry.googleapis.com"
-
-  disable_on_destroy = false
-}
-
-resource "google_project_service" "containeranalysis" {
-  service = "containeranalysis.googleapis.com"
-
-  disable_on_destroy = false
-}
-
-resource "google_project_service" "containerscanning" {
-  service = "containerscanning.googleapis.com"
-
-  disable_on_destroy = false
+    // Do not disable the service on destroy. On destroy, we are going to
+    // destroy the project, but we need the APIs available to destroy the
+    // underlying resources.
+    disable_on_destroy = false
 }
