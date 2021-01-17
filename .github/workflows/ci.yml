@@ -1,0 +1,16 @@
+name: tf-ci
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+jobs:
+  job:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: terraform validate
+        run: |
+          cd tf
+          terraform init -backend=false
+          terraform validate

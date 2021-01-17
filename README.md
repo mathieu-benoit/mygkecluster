@@ -2,6 +2,16 @@
 
 Based mostly on [Hardening your cluster's security](https://cloud.google.com/kubernetes-engine/docs/how-to/hardening-your-cluster) and [GKE's Security overview](https://cloud.google.com/kubernetes-engine/docs/concepts/security-overview).
 
+[![Open in Cloud Shell](https://gstatic.com/cloudssh/images/open-btn.svg)](https://ssh.cloud.google.com/cloudshell/editor?cloudshell_git_repo=https://github.com/mathieu-benoit/mygkecluster&cloudshell_tutorial=README.md)
+
+## Prerequisities
+
+- Install `gcloud`
+- Install `terraform`
+- Install `helm`
+- Install `kubectl`
+- Install `docker`
+
 ```
 projectName=mygke
 randomSuffix=$(shuf -i 100-999 -n 1)
@@ -21,83 +31,22 @@ gcloud config set project $projectId
 billingAccountId=FIXME
 gcloud beta billing projects link $projectId \
     --billing-account $billingAccountId
-projectNumber="$(gcloud projects describe $projectId --format='get(projectNumber)')"
+```
 
-# Protect against project deletion
-gcloud alpha resource-manager liens create \
-    --restrictions=resourcemanager.projects.delete \
-    --reason="Avoid deletion."
+## By `terraform`
 
-## Least Privilege Service Account for default node pool
-gcloud services enable cloudresourcemanager.googleapis.com
-gkeSaName=$clusterName-sa
-gkeSaId=$gkeSaName@$projectId.iam.gserviceaccount.com
-gcloud iam service-accounts create $gkeSaName \
-  --display-name=$gkeSaName
-roles="roles/logging.logWriter roles/monitoring.metricWriter roles/monitoring.viewer"
-for r in $roles; do gcloud projects add-iam-policy-binding $projectId --member "serviceAccount:$gkeSaId" --role $r; done
-  
-## Setup Container Registry
-gcloud services enable artifactregistry.googleapis.com
-containerRegistryName=containers
-gcloud artifacts repositories create $containerRegistryName \
-    --location $region \
-    --repository-format docker
-gcloud services enable containeranalysis.googleapis.com
-gcloud services enable containerscanning.googleapis.com
-gcloud artifacts repositories add-iam-policy-binding $containerRegistryName \
-    --location $region \
-    --member "serviceAccount:$gkeSaId" \
-    --role roles/artifactregistry.reader
+```
+cd tf
+terraform init
+terraform plan -var project_id=$projectId
+terraform apply -auto-approve
+```
 
-## Setup Binary Authorization
-gcloud services enable binaryauthorization.googleapis.com
-cat > policy.yaml << EOF
-admissionWhitelistPatterns:
-- namePattern: $region-docker.pkg.dev/$projectId/$containerRegistryName/*
-defaultAdmissionRule:
-  enforcementMode: ENFORCED_BLOCK_AND_AUDIT_LOG
-  evaluationMode: ALWAYS_DENY
-globalPolicyEvaluationMode: ENABLE
-name: projects/$projectId/policy
-EOF
-gcloud container binauthz policy import policy.yaml
+## By `bash` script
 
-## Create GKE cluster
-gcloud services enable container.googleapis.com
-# Delete the default compute engine service account if you don't have have the Org policy iam.automaticIamGrantsForDefaultServiceAccounts in place
-gcloud iam service-accounts delete $projectNumber-compute@developer.gserviceaccount.com --quiet
-# TODO: remove `beta` once confidential computing is GA.
-gcloud beta container clusters create $clusterName \
-    --enable-confidential-nodes \
-    --enable-binauthz \
-    --service-account $gkeSaId \
-    --workload-pool=$projectId.svc.id.goog \
-    --release-channel rapid \
-    --zone $zone \
-    --disk-type pd-ssd \
-    --machine-type n2d-standard-2 \
-    --disk-size 256 \
-    --image-type cos_containerd \
-    --enable-network-policy \
-    --addons NodeLocalDNS,HttpLoadBalancing \
-    --enable-shielded-nodes \
-    --shielded-secure-boot \
-    --enable-ip-alias \
-    --enable-autorepair \
-    --enable-autoupgrade \
-    --enable-stackdriver-kubernetes \
-    --max-pods-per-node 30 \
-    --default-max-pods-per-node 30 \
-    --services-ipv4-cidr '/25' \
-    --cluster-ipv4-cidr '/20'
-
-## Get GKE cluster kubeconfig
-gcloud container clusters get-credentials $clusterName \
-    --zone $zone
-    
-## Add a label to kube-system namespace, as per https://alwaysupalwayson.com/calico/
-kubectl label ns kube-system name=kube-system
+```
+cd cli
+./run.sh
 ```
 
 Here are the exhaustive list of the security best practices with your GKE clusters you should look at:
