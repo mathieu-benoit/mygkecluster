@@ -38,8 +38,8 @@ resource "google_container_cluster" "cluster" {
     }
 
     private_cluster_config {
-        enable_private_endpoint = "false"
-        enable_private_nodes    = "true"
+        enable_private_endpoint = "false" # TODO
+        enable_private_nodes    = "false" # TODO
     }
 
     vertical_pod_autoscaling {

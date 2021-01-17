@@ -23,7 +23,7 @@ resource "google_artifact_registry_repository" "rego-files-repo" {
     format = "DOCKER"
 }
 
-resource "google_artifact_registry_repository_iam_member" "test-iam" {
+resource "google_artifact_registry_repository_iam_member" "gke-sa-pull-container-images" {
   provider = google-beta
 
   location = var.location

@@ -2,6 +2,8 @@
 
 Based mostly on [Hardening your cluster's security](https://cloud.google.com/kubernetes-engine/docs/how-to/hardening-your-cluster) and [GKE's Security overview](https://cloud.google.com/kubernetes-engine/docs/concepts/security-overview).
 
+[![Open in Cloud Shell](https://gstatic.com/cloudssh/images/open-btn.svg)](https://ssh.cloud.google.com/cloudshell/editor?cloudshell_git_repo=https://github.com/mathieu-benoit/mygkecluster&cloudshell_tutorial=README.md)
+
 ## Prerequisities
 
 - Install `gcloud`
@@ -36,8 +38,8 @@ gcloud beta billing projects link $projectId \
 ```
 cd tf
 terraform init
-terraform plan
-terraform apply
+terraform plan -var project_id=$projectId
+terraform apply -auto-approve
 ```
 
 ## By `bash` script
