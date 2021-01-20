@@ -1,0 +1,11 @@
+apiVersion: configmanagement.gke.io/v1
+kind: ConfigManagement
+metadata:
+  name: config-management
+spec:
+  clusterName: CLUSTER_NAME
+  git:
+    syncRepo: https://github.com/mathieu-benoit/my-kubernetes-deployments
+    syncBranch: main
+    secretType: none
+    policyDir: .
