@@ -75,3 +75,10 @@ gcloud container clusters get-credentials $clusterName \
     
 ## Add a label to kube-system namespace, as per https://alwaysupalwayson.com/calico/
 kubectl label ns kube-system name=kube-system
+
+# Config Sync Operator
+kubectl apply -f components/config-sync-operator.yaml
+
+# Config Sync configs
+sed -i "s/CLUSTERNAME/$clusterName/g" configs/config-management.yaml
+kubectl apply -f configs/config-management.yaml
