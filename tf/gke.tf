@@ -71,7 +71,7 @@ resource "google_container_node_pool" "default-nodepool" {
         }
 
         workload_metadata_config {
-            node_metadata = "GKE_METADATA_SERVER"
+            node_metadata = "GKE_METADATA"
         }
     }
 }
