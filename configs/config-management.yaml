@@ -9,3 +9,15 @@ spec:
     syncBranch: main
     secretType: none
     policyDir: .
+  policyController:
+    enabled: true
+    # Uncomment to prevent the template library from being installed
+    # templateLibraryInstalled: false
+    # Uncomment to enable support for referential constraints
+    # referentialRulesEnabled: true
+    # Uncomment to disable audit, adjust value to set audit interval
+    # auditIntervalSeconds: 0
+    # Uncomment to log all denies and dryrun failures
+    # logDeniesEnabled: true
+    # Uncomment to exempt namespaces
+    # exemptableNamespaces: ["namespace-name"]
