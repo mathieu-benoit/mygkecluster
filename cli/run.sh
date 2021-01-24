@@ -29,16 +29,7 @@ gcloud artifacts repositories add-iam-policy-binding $containerRegistryName \
 
 ## Setup Binary Authorization
 gcloud services enable binaryauthorization.googleapis.com
-cat > policy.yaml << EOF
-admissionWhitelistPatterns:
-- namePattern: $region-docker.pkg.dev/$projectId/$containerRegistryName/*
-defaultAdmissionRule:
-  enforcementMode: ENFORCED_BLOCK_AND_AUDIT_LOG
-  evaluationMode: ALWAYS_DENY
-globalPolicyEvaluationMode: ENABLE
-name: projects/$projectId/policy
-EOF
-gcloud container binauthz policy import policy.yaml
+gcloud container binauthz policy import ../configs/binauth-policy.yaml
 
 ## Create GKE cluster
 gcloud services enable container.googleapis.com
@@ -78,8 +69,8 @@ kubectl label ns kube-system name=kube-system
 
 # Config Sync
 kubectl apply -f components/config-sync-operator.yaml
-sed -i "s/CLUSTERNAME/$clusterName/g" configs/config-management.yaml
-kubectl apply -f configs/config-management.yaml
+sed -i "s/CLUSTERNAME/$clusterName/g" ../configs/config-management.yaml
+kubectl apply -f ../configs/config-management.yaml
 
 # Config Connector
 ccSa=configconnector-sa
@@ -91,8 +82,8 @@ gcloud projects add-iam-policy-binding $projectId \
 gcloud iam service-accounts add-iam-policy-binding $ccSa@$projectId.iam.gserviceaccount.com \
     --member="serviceAccount:$projectId.svc.id.goog[cnrm-system/cnrm-controller-manager]" \
     --role="roles/iam.workloadIdentityUser"
-sed -i "s/SERVICE_ACCOUNT_NAME/$ccSa/g" configs/config-connector.yaml
-sed -i "s/PROJECT_ID/$projectId/g" configs/config-connector.yaml
+sed -i "s/SERVICE_ACCOUNT_NAME/$ccSa/g" ../configs/config-connector.yaml
+sed -i "s/PROJECT_ID/$projectId/g" ../configs/config-connector.yaml
 kubectl apply -f config-connector.yaml
 
 # TODOs:

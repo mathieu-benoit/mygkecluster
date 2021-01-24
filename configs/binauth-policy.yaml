@@ -1,0 +1,7 @@
+admissionWhitelistPatterns:
+- namePattern: $region-docker.pkg.dev/$projectId/$containerRegistryName/*
+defaultAdmissionRule:
+  enforcementMode: ENFORCED_BLOCK_AND_AUDIT_LOG
+  evaluationMode: ALWAYS_DENY
+globalPolicyEvaluationMode: ENABLE
+name: projects/$projectId/policy
