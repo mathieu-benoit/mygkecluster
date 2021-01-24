@@ -27,6 +27,10 @@ resource "google_container_cluster" "cluster" {
         dns_cache_config {
             enabled = true
         }
+
+        config_connector_config {
+            enabled = true
+        }
     }
 
     network_policy {

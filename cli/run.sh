@@ -57,7 +57,7 @@ gcloud beta container clusters create $clusterName \
     --disk-size 256 \
     --image-type cos_containerd \
     --enable-network-policy \
-    --addons NodeLocalDNS,HttpLoadBalancing \
+    --addons NodeLocalDNS,HttpLoadBalancing,ConfigConnector \
     --enable-shielded-nodes \
     --shielded-secure-boot \
     --enable-ip-alias \
@@ -76,9 +76,25 @@ gcloud container clusters get-credentials $clusterName \
 ## Add a label to kube-system namespace, as per https://alwaysupalwayson.com/calico/
 kubectl label ns kube-system name=kube-system
 
-# Config Sync Operator
+# Config Sync
 kubectl apply -f components/config-sync-operator.yaml
-
-# Config Sync configs
 sed -i "s/CLUSTERNAME/$clusterName/g" configs/config-management.yaml
 kubectl apply -f configs/config-management.yaml
+
+# Config Connector
+ccSa=configconnector-sa
+gcloud iam service-accounts create $ccSa
+gcloud projects add-iam-policy-binding $projectId \
+    --member="serviceAccount:$ccSa@$projectId.iam.gserviceaccount.com" \
+    --role="roles/owner"
+# FIXME, shouldn't be `roles/owner`
+gcloud iam service-accounts add-iam-policy-binding $ccSa@$projectId.iam.gserviceaccount.com \
+    --member="serviceAccount:$projectId.svc.id.goog[cnrm-system/cnrm-controller-manager]" \
+    --role="roles/iam.workloadIdentityUser"
+sed -i "s/SERVICE_ACCOUNT_NAME/$ccSa/g" configs/config-connector.yaml
+sed -i "s/PROJECT_ID/$projectId/g" configs/config-connector.yaml
+kubectl apply -f config-connector.yaml
+
+# TODOs:
+# - scope namespaced instead of cluster for Config Connector (to have proper sa scope)?
+# - multi project id managementm not all in GKE's project
