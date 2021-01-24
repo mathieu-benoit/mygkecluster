@@ -84,7 +84,7 @@ gcloud iam service-accounts add-iam-policy-binding $ccSa@$projectId.iam.gservice
     --role="roles/iam.workloadIdentityUser"
 sed -i "s/SERVICE_ACCOUNT_NAME/$ccSa/g" ../configs/config-connector.yaml
 sed -i "s/PROJECT_ID/$projectId/g" ../configs/config-connector.yaml
-kubectl apply -f config-connector.yaml
+kubectl apply -f ../configs/config-connector.yaml
 
 # TODOs:
 # - scope namespaced instead of cluster for Config Connector (to have proper sa scope)?
