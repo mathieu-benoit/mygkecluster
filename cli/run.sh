@@ -1,10 +1,5 @@
 #!/bin/bash
 
-# Protect against project deletion
-gcloud alpha resource-manager liens create \
-    --restrictions=resourcemanager.projects.delete \
-    --reason="Avoid project deletion."
-
 ## Least Privilege Service Account for default node pool
 gcloud services enable cloudresourcemanager.googleapis.com
 gkeSaName=$clusterName-sa
@@ -44,7 +39,7 @@ gcloud beta container clusters create $clusterName \
     --release-channel rapid \
     --zone $zone \
     --disk-type pd-ssd \
-    --machine-type n2d-standard-2 \
+    --machine-type n2d-standard-4 \
     --disk-size 256 \
     --image-type cos_containerd \
     --enable-network-policy \
@@ -58,7 +53,8 @@ gcloud beta container clusters create $clusterName \
     --max-pods-per-node 30 \
     --default-max-pods-per-node 30 \
     --services-ipv4-cidr '/25' \
-    --cluster-ipv4-cidr '/20'
+    --cluster-ipv4-cidr '/20' \
+    --enable-vertical-pod-autoscaling
 
 ## Get GKE cluster kubeconfig
 gcloud container clusters get-credentials $clusterName \
@@ -66,6 +62,18 @@ gcloud container clusters get-credentials $clusterName \
     
 ## Add a label to kube-system namespace, as per https://alwaysupalwayson.com/calico/
 kubectl label ns kube-system name=kube-system
+
+# ASM
+mkdir ~/tmp
+curl https://storage.googleapis.com/csm-artifacts/asm/install_asm_1.8 > ~/tmp/install_asm
+chmod +x ~/tmp/install_asm
+~/tmp/./install_asm \
+  --project_id $projectId \
+  --cluster_name $clusterName \
+  --cluster_location $zone \
+  --mode install \
+  --enable-all
+# --option cloud-tracing
 
 # Config Sync
 kubectl apply -f components/config-sync-operator.yaml
