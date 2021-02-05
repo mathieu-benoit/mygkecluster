@@ -3,7 +3,7 @@ kind: ConfigManagement
 metadata:
   name: config-management
 spec:
-  clusterName: mygke-756
+  clusterName: CLUSTER_NAME
   git:
     syncRepo: https://github.com/mathieu-benoit/my-kubernetes-deployments
     syncBranch: main

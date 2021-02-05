@@ -1,7 +1,10 @@
 admissionWhitelistPatterns:
-- namePattern: $region-docker.pkg.dev/$projectId/$containerRegistryName/*
+- namePattern: REGION-docker.pkg.dev/PROJECT_ID/REGISTRY_NAME/bankofanthos/*
+- namePattern: REGION-docker.pkg.dev/PROJECT_ID/REGISTRY_NAME/onlineboutique/*
+- namePattern: REGION-docker.pkg.dev/PROJECT_ID/REGISTRY_NAME/*
+- namePattern: gcr.io/gke-release/asm/canonical-service-controller:*
 defaultAdmissionRule:
   enforcementMode: ENFORCED_BLOCK_AND_AUDIT_LOG
   evaluationMode: ALWAYS_DENY
 globalPolicyEvaluationMode: ENABLE
-name: projects/$projectId/policy
+name: projects/PROJECT_ID/policy
