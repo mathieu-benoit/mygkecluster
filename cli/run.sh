@@ -24,11 +24,15 @@ gcloud artifacts repositories add-iam-policy-binding $containerRegistryName \
 
 ## Setup Binary Authorization
 gcloud services enable binaryauthorization.googleapis.com
+sed -i "s/REGION/$region/g" ../configs/binauth-policy.yaml
+sed -i "s/PROJECT_ID/$projectId/g" ../configs/binauth-policy.yaml
+sed -i "s/REGISTRY_NAME/$containerRegistryName/g" ../configs/binauth-policy.yaml
 gcloud container binauthz policy import ../configs/binauth-policy.yaml
 
 ## Create GKE cluster
 gcloud services enable container.googleapis.com
 # Delete the default compute engine service account if you don't have have the Org policy iam.automaticIamGrantsForDefaultServiceAccounts in place
+projectNumber="$(gcloud projects describe $projectId --format='get(projectNumber)')"
 gcloud iam service-accounts delete $projectNumber-compute@developer.gserviceaccount.com --quiet
 # TODO: remove `beta` once confidential computing is GA.
 gcloud beta container clusters create $clusterName \
@@ -67,7 +71,7 @@ kubectl label ns kube-system name=kube-system
 mkdir ~/tmp
 curl https://storage.googleapis.com/csm-artifacts/asm/install_asm_1.8 > ~/tmp/install_asm
 chmod +x ~/tmp/install_asm
-~/tmp/./install_asm \
+~/tmp/install_asm \
   --project_id $projectId \
   --cluster_name $clusterName \
   --cluster_location $zone \
