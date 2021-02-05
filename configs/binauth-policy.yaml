@@ -1,6 +1,6 @@
 admissionWhitelistPatterns:
-- namePattern: REGION-docker.pkg.dev/PROJECT_ID/REGISTRY_NAME/bankofanthos/*
-- namePattern: REGION-docker.pkg.dev/PROJECT_ID/REGISTRY_NAME/onlineboutique/*
+- namePattern: REGION-docker.pkg.dev/PROJECT_ID/REGISTRY_NAME/bank-of-anthos/*
+- namePattern: REGION-docker.pkg.dev/PROJECT_ID/REGISTRY_NAME/boutique/*
 - namePattern: REGION-docker.pkg.dev/PROJECT_ID/REGISTRY_NAME/*
 - namePattern: gcr.io/gke-release/asm/canonical-service-controller:*
 defaultAdmissionRule:
