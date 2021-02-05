@@ -67,6 +67,10 @@ gcloud container clusters get-credentials $clusterName \
 ## Add a label to kube-system namespace, as per https://alwaysupalwayson.com/calico/
 kubectl label ns kube-system name=kube-system
 
+# Enable Anthos
+gcloud services enable anthos.googleapis.com
+# FIXME: GKE connect, etc.
+
 # ASM
 mkdir ~/tmp
 curl https://storage.googleapis.com/csm-artifacts/asm/install_asm_1.8 > ~/tmp/install_asm
@@ -80,8 +84,8 @@ chmod +x ~/tmp/install_asm
 # --option cloud-tracing
 
 # Config Sync
-kubectl apply -f components/config-sync-operator.yaml
-sed -i "s/CLUSTERNAME/$clusterName/g" ../configs/config-management.yaml
+kubectl apply -f ../components/config-sync-operator.yaml
+sed -i "s/CLUSTER_NAME/$clusterName/g" ../configs/config-management.yaml
 kubectl apply -f ../configs/config-management.yaml
 
 # Config Connector
