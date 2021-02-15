@@ -63,9 +63,6 @@ gcloud beta container clusters create $clusterName \
 ## Get GKE cluster kubeconfig
 gcloud container clusters get-credentials $clusterName \
     --zone $zone
-    
-## Add a label to kube-system namespace, as per https://alwaysupalwayson.com/calico/
-kubectl label ns kube-system name=kube-system
 
 # Enable Anthos
 gcloud services enable anthos.googleapis.com
@@ -82,6 +79,10 @@ chmod +x ~/tmp/install_asm
   --mode install \
   --enable-all
 # --option cloud-tracing
+
+## Add labels to kube-system and istio-sytem namespaces, as per https://alwaysupalwayson.com/calico/
+kubectl label ns kube-system name=kube-system
+kubectl label ns istio-system name=istio-system
 
 # Config Sync
 kubectl apply -f ../components/config-sync-operator.yaml
