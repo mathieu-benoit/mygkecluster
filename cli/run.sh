@@ -85,7 +85,7 @@ kubectl label ns kube-system name=kube-system
 kubectl label ns istio-system name=istio-system
 
 # Config Sync
-kubectl apply -f ../components/config-sync-operator.yaml
+kubectl apply -f ../components/config-management-operator.yaml
 sed -i "s/CLUSTER_NAME/$clusterName/g" ../configs/config-management.yaml
 kubectl apply -f ../configs/config-management.yaml
 
