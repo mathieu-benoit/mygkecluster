@@ -3,7 +3,8 @@ kind: ConfigManagement
 metadata:
   name: config-management
 spec:
-  clusterName: CLUSTER_NAME
+  policyController:
+    enabled: true
   git:
     syncRepo: https://github.com/mathieu-benoit/my-kubernetes-deployments
     syncBranch: main
