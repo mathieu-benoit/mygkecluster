@@ -66,11 +66,13 @@ gcloud container clusters get-credentials $clusterName \
 
 # Enable Anthos
 gcloud services enable anthos.googleapis.com
-# FIXME: GKE connect, etc.
+gcloud container hub memberships register $clusterName \
+    --gke-cluster $zone/$clusterName \
+    --enable-workload-identity
 
 # ASM
 mkdir ~/tmp
-curl https://storage.googleapis.com/csm-artifacts/asm/install_asm_1.8 > ~/tmp/install_asm
+curl https://storage.googleapis.com/csm-artifacts/asm/install_asm_1.9 > ~/tmp/install_asm
 chmod +x ~/tmp/install_asm
 ~/tmp/install_asm \
   --project_id $projectId \
@@ -85,6 +87,7 @@ kubectl label ns kube-system name=kube-system
 kubectl label ns istio-system name=istio-system
 
 # Config Sync
+gcloud alpha container hub config-management enable
 kubectl apply -f ../components/config-management-operator.yaml
 sed -i "s/CLUSTER_NAME/$clusterName/g" ../configs/config-management.yaml
 kubectl apply -f ../configs/config-management.yaml
