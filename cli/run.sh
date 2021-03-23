@@ -93,6 +93,7 @@ sed -i "s/CLUSTER_NAME/$clusterName/g" ../configs/config-management.yaml
 kubectl apply -f ../configs/config-management.yaml
 
 # Config Connector
+kubectl apply -f ../components/configconnector-operator.yaml
 ccSa=configconnector-sa
 gcloud iam service-accounts create $ccSa
 gcloud projects add-iam-policy-binding $projectId \
