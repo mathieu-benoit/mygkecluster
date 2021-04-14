@@ -34,7 +34,10 @@ gcloud services enable container.googleapis.com
 # Delete the default compute engine service account if you don't have have the Org policy iam.automaticIamGrantsForDefaultServiceAccounts in place
 projectNumber="$(gcloud projects describe $projectId --format='get(projectNumber)')"
 gcloud iam service-accounts delete $projectNumber-compute@developer.gserviceaccount.com --quiet
-# TODO: remove `beta` once confidential computing is GA.
+# Get local IP address to get access to the Kubernetes API (I'm on Crostini)
+myIpAddress=$(curl ifconfig.co)
+# TODO: remove `beta` as soon as confidential computing and Dataplane V2 are GA.
+# TODO: add `--addons NodeLocalDNS` back as soon as it is supported by Dataplane V2.
 gcloud beta container clusters create $clusterName \
     --enable-confidential-nodes \
     --enable-binauthz \
@@ -46,8 +49,8 @@ gcloud beta container clusters create $clusterName \
     --machine-type n2d-standard-4 \
     --disk-size 256 \
     --image-type cos_containerd \
-    --enable-network-policy \
-    --addons NodeLocalDNS,HttpLoadBalancing,ConfigConnector \
+    --enable-dataplane-v2 \
+    --addons HttpLoadBalancing \
     --enable-shielded-nodes \
     --shielded-secure-boot \
     --enable-ip-alias \
@@ -58,7 +61,9 @@ gcloud beta container clusters create $clusterName \
     --default-max-pods-per-node 30 \
     --services-ipv4-cidr '/25' \
     --cluster-ipv4-cidr '/20' \
-    --enable-vertical-pod-autoscaling
+    --enable-vertical-pod-autoscaling \
+    --enable-master-authorized-networks \
+    --master-authorized-networks $myIpAddress/32
 
 ## Get GKE cluster kubeconfig
 gcloud container clusters get-credentials $clusterName \
@@ -79,8 +84,8 @@ chmod +x ~/tmp/install_asm
   --cluster_name $clusterName \
   --cluster_location $zone \
   --mode install \
-  --enable-all
-# --option cloud-tracing
+  --enable-all \
+  --option cloud-tracing
 
 ## Add labels to kube-system and istio-sytem namespaces, as per https://alwaysupalwayson.com/calico/
 kubectl label ns kube-system name=kube-system
