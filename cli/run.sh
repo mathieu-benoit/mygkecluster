@@ -36,8 +36,7 @@ projectNumber="$(gcloud projects describe $projectId --format='get(projectNumber
 gcloud iam service-accounts delete $projectNumber-compute@developer.gserviceaccount.com --quiet
 # Get local IP address to get access to the Kubernetes API (I'm on Crostini)
 myIpAddress=$(curl ifconfig.co)
-# TODO: remove `beta` as soon as confidential computing and Dataplane V2 are GA.
-# TODO: add `--addons NodeLocalDNS` back as soon as it is supported by Dataplane V2.
+# TODO: remove `beta` as soon as confidential computing is GA.
 gcloud beta container clusters create $clusterName \
     --enable-confidential-nodes \
     --enable-binauthz \
@@ -50,7 +49,7 @@ gcloud beta container clusters create $clusterName \
     --disk-size 256 \
     --image-type cos_containerd \
     --enable-dataplane-v2 \
-    --addons HttpLoadBalancing \
+    --addons NodeLocalDNS,HttpLoadBalancing \
     --enable-shielded-nodes \
     --shielded-secure-boot \
     --enable-ip-alias \
