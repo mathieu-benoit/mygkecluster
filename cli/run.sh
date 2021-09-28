@@ -9,7 +9,7 @@ gcloud iam service-accounts create $gkeSaName \
 roles="roles/logging.logWriter roles/monitoring.metricWriter roles/monitoring.viewer"
 for r in $roles; do gcloud projects add-iam-policy-binding $projectId --member "serviceAccount:$gkeSaId" --role $r; done
   
-## Setup Container Registry
+## Setup Artifact Registry
 gcloud services enable artifactregistry.googleapis.com
 containerRegistryName=containers
 gcloud artifacts repositories create $containerRegistryName \
@@ -112,22 +112,3 @@ gcloud alpha container hub config-management enable
 kubectl apply -f ../components/config-management-operator.yaml
 sed -i "s/CLUSTER_NAME/$clusterName/g" ../configs/config-management.yaml
 kubectl apply -f ../configs/config-management.yaml
-
-# Config Connector
-kubectl apply -f ../components/configconnector-operator.yaml
-ccSa=configconnector-sa
-gcloud iam service-accounts create $ccSa
-gcloud projects add-iam-policy-binding $projectId \
-    --member="serviceAccount:$ccSa@$projectId.iam.gserviceaccount.com" \
-    --role="roles/owner"
-# FIXME, shouldn't be `roles/owner`
-gcloud iam service-accounts add-iam-policy-binding $ccSa@$projectId.iam.gserviceaccount.com \
-    --member="serviceAccount:$projectId.svc.id.goog[cnrm-system/cnrm-controller-manager]" \
-    --role="roles/iam.workloadIdentityUser"
-sed -i "s/SERVICE_ACCOUNT_NAME/$ccSa/g" ../configs/config-connector.yaml
-sed -i "s/PROJECT_ID/$projectId/g" ../configs/config-connector.yaml
-kubectl apply -f ../configs/config-connector.yaml
-
-# TODOs:
-# - scope namespaced instead of cluster for Config Connector (to have proper sa scope)?
-# - multi project id managementm not all in GKE's project
