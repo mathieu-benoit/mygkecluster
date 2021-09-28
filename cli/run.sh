@@ -110,6 +110,9 @@ gcloud beta container hub config-management enable
 cat <<EOF > configsync-config.yaml
 applySpecVersion: 1
 spec:
+  policyController:
+    enabled: true
+    templateLibraryInstalled: true
   configSync:
     enabled: true
     sourceFormat: hierarchy
