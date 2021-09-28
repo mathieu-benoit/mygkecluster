@@ -12,13 +12,6 @@ Based mostly on [Hardening your cluster's security](https://cloud.google.com/kub
 - Install `kubectl`
 - Install `docker`
 
-Get latest Config Sync Operator:
-```
-cd components
-version=1.6.0
-gsutil cp gs://config-management-release/released/$version/config-sync-operator.yaml config-sync-operator.yaml
-```
-
 ```
 projectName=mygke
 randomSuffix=$(shuf -i 100-999 -n 1)
