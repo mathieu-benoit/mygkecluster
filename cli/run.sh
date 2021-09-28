@@ -76,15 +76,32 @@ gcloud container hub memberships register $clusterName \
 
 # ASM
 mkdir ~/tmp
-curl https://storage.googleapis.com/csm-artifacts/asm/install_asm_1.9 > ~/tmp/install_asm
+curl https://storage.googleapis.com/csm-artifacts/asm/install_asm_1.10 > ~/tmp/install_asm
 chmod +x ~/tmp/install_asm
+cat <<EOF > ingress-backendconfig-operator.yaml
+---
+apiVersion: install.istio.io/v1alpha1
+kind: IstioOperator
+spec:
+  components:
+    ingressGateways:
+      - name: istio-ingressgateway
+        enabled: true
+        k8s:
+          service:
+            type: ClusterIP
+          serviceAnnotations:
+            cloud.google.com/backend-config: '{"default": "ingress-backendconfig"}'
+            cloud.google.com/neg: '{"ingress": true}'
+EOF
 ~/tmp/install_asm \
   --project_id $projectId \
   --cluster_name $clusterName \
   --cluster_location $zone \
   --mode install \
   --enable-all \
-  --option cloud-tracing
+  --option cloud-tracing \
+  --custom_overlay ingress-backendconfig-operator.yaml
 
 ## Add labels to kube-system and istio-sytem namespaces, as per https://alwaysupalwayson.com/calico/
 kubectl label ns kube-system name=kube-system
