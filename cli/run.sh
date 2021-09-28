@@ -75,9 +75,8 @@ gcloud container hub memberships register $clusterName \
     --enable-workload-identity
 
 # ASM
-mkdir ~/tmp
-curl https://storage.googleapis.com/csm-artifacts/asm/install_asm_1.10 > ~/tmp/install_asm
-chmod +x ~/tmp/install_asm
+curl https://storage.googleapis.com/csm-artifacts/asm/install_asm_1.10 > install_asm
+chmod +x install_asm
 cat <<EOF > ingress-backendconfig-operator.yaml
 ---
 apiVersion: install.istio.io/v1alpha1
@@ -94,7 +93,7 @@ spec:
             cloud.google.com/backend-config: '{"default": "ingress-backendconfig"}'
             cloud.google.com/neg: '{"ingress": true}'
 EOF
-~/tmp/install_asm \
+install_asm \
   --project_id $projectId \
   --cluster_name $clusterName \
   --cluster_location $zone \
@@ -107,8 +106,21 @@ EOF
 kubectl label ns kube-system name=kube-system
 kubectl label ns istio-system name=istio-system
 
+# Provision infra specifically per apps (myblog, onlineboutique, bankofanthos) before doing the config sync section below
+
 # Config Sync
-gcloud alpha container hub config-management enable
-kubectl apply -f ../components/config-management-operator.yaml
-sed -i "s/CLUSTER_NAME/$clusterName/g" ../configs/config-management.yaml
-kubectl apply -f ../configs/config-management.yaml
+gcloud beta container hub config-management enable
+cat <<EOF > configsync-config.yaml
+applySpecVersion: 1
+spec:
+  configSync:
+    enabled: true
+    sourceFormat: hierarchy
+    syncRepo: https://github.com/mathieu-benoit/my-kubernetes-deployments
+    syncBranch: main
+    secretType: none
+    policyDir: .
+EOF
+gcloud beta container hub config-management apply \
+  --membership=$clusterName \
+  --config=configsync-config.yaml
