@@ -64,10 +64,6 @@ gcloud beta container clusters create $clusterName \
     --enable-master-authorized-networks \
     --master-authorized-networks $myIpAddress/32
 
-## Get GKE cluster kubeconfig
-gcloud container clusters get-credentials $clusterName \
-    --zone $zone
-
 # Enable Anthos
 gcloud services enable anthos.googleapis.com
 gcloud container hub memberships register $clusterName \
@@ -103,6 +99,7 @@ install_asm \
   --custom_overlay ingress-backendconfig-operator.yaml
 
 ## Add labels to kube-system and istio-sytem namespaces, as per https://alwaysupalwayson.com/calico/
+# FIXME - put that in https://github.com/mathieu-benoit/my-kubernetes-deployments, we shouldn't do kubectl on this remote GKE cluster, soon private...
 kubectl label ns kube-system name=kube-system
 kubectl label ns istio-system name=istio-system
 
