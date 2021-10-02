@@ -81,33 +81,31 @@ gcloud container hub memberships register $clusterName \
     --gke-cluster $zone/$clusterName \
     --enable-workload-identity
 
+# Cloud Armor
+securityPolicyName=$clusterName
+gcloud compute security-policies create $securityPolicyName \
+    --description "Block XSS attacks"
+gcloud compute security-policies rules create 1000 \
+    --security-policy $securityPolicyName \
+    --expression "evaluatePreconfiguredExpr('xss-stable')" \
+    --action "deny-403" \
+    --description "XSS attack filtering"
+gcloud compute security-policies update $securityPolicyName \
+    --enable-layer7-ddos-defense
+sed -i "s/SECURITY_POLICY_NAME/$securityPolicyName/g" ../configs/ingress-backendconfig.yaml
+kubectl apply -f ../configs/ingress-backendconfig.yaml
+
 # ASM
-curl https://storage.googleapis.com/csm-artifacts/asm/install_asm_1.10 > install_asm
-chmod +x install_asm
-cat <<EOF > ingress-backendconfig-operator.yaml
----
-apiVersion: install.istio.io/v1alpha1
-kind: IstioOperator
-spec:
-  components:
-    ingressGateways:
-      - name: istio-ingressgateway
-        enabled: true
-        k8s:
-          service:
-            type: ClusterIP
-          serviceAnnotations:
-            cloud.google.com/backend-config: '{"default": "ingress-backendconfig"}'
-            cloud.google.com/neg: '{"ingress": true}'
-EOF
-install_asm \
+curl https://storage.googleapis.com/csm-artifacts/asm/install_asm_1.10 > ~/install_asm
+chmod +x ~/install_asm
+~/install_asm \
   --project_id $projectId \
   --cluster_name $clusterName \
   --cluster_location $zone \
   --mode install \
   --enable-all \
   --option cloud-tracing \
-  --custom_overlay ingress-backendconfig-operator.yaml
+  --custom_overlay ../configs/ingress-backendconfig-operator.yaml
 
 ## Add labels to kube-system and istio-sytem namespaces, as per https://alwaysupalwayson.com/calico/
 # FIXME - put that in https://github.com/mathieu-benoit/my-kubernetes-deployments, we shouldn't do kubectl on this remote GKE cluster, soon private...
