@@ -55,7 +55,8 @@ gcloud beta container clusters create $clusterName \
     --enable-ip-alias \
     --enable-autorepair \
     --enable-autoupgrade \
-    --enable-stackdriver-kubernetes \
+    --logging=SYSTEM,WORKLOAD \
+    --monitoring=SYSTEM \
     --max-pods-per-node 30 \
     --default-max-pods-per-node 30 \
     --services-ipv4-cidr '/25' \
