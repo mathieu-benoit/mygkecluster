@@ -1,0 +1,12 @@
+applySpecVersion: 1
+spec:
+  policyController:
+    enabled: true
+    templateLibraryInstalled: true
+  configSync:
+    enabled: true
+    sourceFormat: hierarchy
+    syncRepo: https://github.com/mathieu-benoit/my-kubernetes-deployments
+    syncBranch: main
+    secretType: none
+    policyDir: .
