@@ -116,20 +116,6 @@ kubectl label ns istio-system name=istio-system
 
 # Config Sync
 gcloud beta container hub config-management enable
-cat <<EOF > configsync-config.yaml
-applySpecVersion: 1
-spec:
-  policyController:
-    enabled: true
-    templateLibraryInstalled: true
-  configSync:
-    enabled: true
-    sourceFormat: hierarchy
-    syncRepo: https://github.com/mathieu-benoit/my-kubernetes-deployments
-    syncBranch: main
-    secretType: none
-    policyDir: .
-EOF
 gcloud beta container hub config-management apply \
-  --membership=$clusterName \
-  --config=configsync-config.yaml
+  --membership $clusterName \
+  --config ../configs/configsync-config.yaml
