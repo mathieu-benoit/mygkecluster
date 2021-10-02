@@ -65,6 +65,16 @@ gcloud beta container clusters create $clusterName \
     --enable-master-authorized-networks \
     --master-authorized-networks $myIpAddress/32
 
+# Update to latest version of the current channel
+newVersion=FIXME
+gcloud container clusters upgrade $clusterName --master \
+    --zone $zone \
+    --cluster-version $newVersion \
+    --quiet
+gcloud container clusters upgrade $clusterName \
+    --zone $zone \
+    --quiet
+
 # Enable Anthos
 gcloud services enable anthos.googleapis.com
 gcloud container hub memberships register $clusterName \
