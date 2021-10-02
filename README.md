@@ -16,8 +16,8 @@ Based mostly on [Hardening your cluster's security](https://cloud.google.com/kub
 projectName=mygke
 randomSuffix=$(shuf -i 100-999 -n 1)
 projectId=$projectName-$randomSuffix
-region=us-east4
-zone=us-east4-a
+region=northamerica-northeast1
+zone=northamerica-northeast1-b
 clusterName=$projectName
 
 ## Setup Project
