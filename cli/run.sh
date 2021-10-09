@@ -96,16 +96,14 @@ sed -i "s/SECURITY_POLICY_NAME/$securityPolicyName/g" ../configs/ingress-backend
 kubectl apply -f ../configs/ingress-backendconfig.yaml
 
 # ASM
-curl https://storage.googleapis.com/csm-artifacts/asm/install_asm_1.10 > ~/install_asm
-chmod +x ~/install_asm
-~/install_asm \
+curl https://storage.googleapis.com/csm-artifacts/asm/asmcli_1.11 > ~/asmcli
+chmod +x ~/asmcli
+~/asmcli install \
   --project_id $projectId \
   --cluster_name $clusterName \
   --cluster_location $zone \
-  --mode install \
   --enable-all \
-  --option cloud-tracing \
-  --custom_overlay ../configs/ingress-backendconfig-operator.yaml
+  --option cloud-tracing
 
 ## Add labels to kube-system and istio-sytem namespaces, as per https://alwaysupalwayson.com/calico/
 # FIXME - put that in https://github.com/mathieu-benoit/my-kubernetes-deployments, we shouldn't do kubectl on this remote GKE cluster, soon private...
