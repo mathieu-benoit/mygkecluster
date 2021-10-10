@@ -81,20 +81,6 @@ gcloud container hub memberships register $clusterName \
     --gke-cluster $zone/$clusterName \
     --enable-workload-identity
 
-# Cloud Armor
-securityPolicyName=$clusterName
-gcloud compute security-policies create $securityPolicyName \
-    --description "Block XSS attacks"
-gcloud compute security-policies rules create 1000 \
-    --security-policy $securityPolicyName \
-    --expression "evaluatePreconfiguredExpr('xss-stable')" \
-    --action "deny-403" \
-    --description "XSS attack filtering"
-gcloud compute security-policies update $securityPolicyName \
-    --enable-layer7-ddos-defense
-sed -i "s/SECURITY_POLICY_NAME/$securityPolicyName/g" ../configs/ingress-backendconfig.yaml
-kubectl apply -f ../configs/ingress-backendconfig.yaml
-
 # ASM
 curl https://storage.googleapis.com/csm-artifacts/asm/asmcli_1.11 > ~/asmcli
 chmod +x ~/asmcli
@@ -104,6 +90,27 @@ chmod +x ~/asmcli
   --cluster_location $zone \
   --enable-all \
   --option cloud-tracing
+
+# Cloud Armor for the ASM Ingress Gateway
+securityPolicyName=$clusterName-istio-ingressgateway # Name hard-coded there: https://github.com/mathieu-benoit/my-kubernetes-deployments/tree/main/namespaces/ingress-gateway/backendconfig.yaml
+gcloud compute security-policies create $securityPolicyName \
+    --description "Block XSS attacks"
+gcloud compute security-policies rules create 1000 \
+    --security-policy $securityPolicyName \
+    --expression "evaluatePreconfiguredExpr('xss-stable')" \
+    --action "deny-403" \
+    --description "XSS attack filtering"
+gcloud compute security-policies update $securityPolicyName \
+    --enable-layer7-ddos-defense
+
+# Public IP for the ASM Ingress Gateway
+staticIpName=$clusterName-istio-ingressgateway # Name hard-coded there: https://github.com/mathieu-benoit/my-kubernetes-deployments/tree/main/namespaces/ingress-gateway/ingress.yaml
+gcloud compute addresses create $staticIpName \
+    --global
+gcloud compute addresses describe $staticIpName \
+    --global \
+    --format "value(address)"
+# Grab that IP address to setup the DNS entries.
 
 ## Add labels to kube-system and istio-sytem namespaces, as per https://alwaysupalwayson.com/calico/
 # FIXME - put that in https://github.com/mathieu-benoit/my-kubernetes-deployments, we shouldn't do kubectl on this remote GKE cluster, soon private...
