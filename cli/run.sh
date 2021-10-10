@@ -102,6 +102,10 @@ gcloud compute security-policies rules create 1000 \
     --description "XSS attack filtering"
 gcloud compute security-policies update $securityPolicyName \
     --enable-layer7-ddos-defense
+sslPolicyName=$securityPolicyName # Name hard-coded there: https://github.com/mathieu-benoit/my-kubernetes-deployments/tree/main/namespaces/ingress-gateway/frontendconfig.yaml
+gcloud compute ssl-policies create $sslPolicyName \
+    --profile COMPATIBLE  \
+    --min-tls-version 1.0
 
 # Public IP for the ASM Ingress Gateway
 staticIpName=$clusterName-istio-ingressgateway # Name hard-coded there: https://github.com/mathieu-benoit/my-kubernetes-deployments/tree/main/namespaces/ingress-gateway/ingress.yaml
