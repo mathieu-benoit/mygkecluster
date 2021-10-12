@@ -116,12 +116,7 @@ gcloud compute addresses describe $staticIpName \
     --format "value(address)"
 # Grab that IP address to setup the DNS entries.
 
-## Add labels to kube-system and istio-sytem namespaces, as per https://alwaysupalwayson.com/calico/
-# FIXME - put that in https://github.com/mathieu-benoit/my-kubernetes-deployments, we shouldn't do kubectl on this remote GKE cluster, soon private...
-kubectl label ns kube-system name=kube-system
-kubectl label ns istio-system name=istio-system
-
-# Provision infra specifically per apps (myblog, onlineboutique, bankofanthos) before doing the config sync section below
+# Provision infra specifically per apps (istio-ingress, myblog, onlineboutique, bankofanthos) before doing the config sync section below
 
 # Config Sync
 gcloud beta container hub config-management enable
