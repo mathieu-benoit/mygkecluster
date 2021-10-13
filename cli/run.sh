@@ -92,7 +92,7 @@ chmod +x ~/asmcli
   --option cloud-tracing
 
 # Cloud Armor for the ASM Ingress Gateway
-securityPolicyName=$clusterName-istio-ingressgateway # Name hard-coded there: https://github.com/mathieu-benoit/my-kubernetes-deployments/tree/main/namespaces/ingress-gateway/backendconfig.yaml
+securityPolicyName=$clusterName-asm-ingressgateway # Name hard-coded there: https://github.com/mathieu-benoit/my-kubernetes-deployments/tree/main/namespaces/asm-ingress/backendconfig.yaml
 gcloud compute security-policies create $securityPolicyName \
     --description "Block XSS attacks"
 gcloud compute security-policies rules create 1000 \
@@ -102,13 +102,13 @@ gcloud compute security-policies rules create 1000 \
     --description "XSS attack filtering"
 gcloud compute security-policies update $securityPolicyName \
     --enable-layer7-ddos-defense
-sslPolicyName=$securityPolicyName # Name hard-coded there: https://github.com/mathieu-benoit/my-kubernetes-deployments/tree/main/namespaces/ingress-gateway/frontendconfig.yaml
+sslPolicyName=$securityPolicyName # Name hard-coded there: https://github.com/mathieu-benoit/my-kubernetes-deployments/tree/main/namespaces/asm-ingress/frontendconfig.yaml
 gcloud compute ssl-policies create $sslPolicyName \
     --profile COMPATIBLE  \
     --min-tls-version 1.0
 
 # Public IP for the ASM Ingress Gateway
-staticIpName=$clusterName-istio-ingressgateway # Name hard-coded there: https://github.com/mathieu-benoit/my-kubernetes-deployments/tree/main/namespaces/ingress-gateway/ingress.yaml
+staticIpName=$clusterName-asm-ingressgateway # Name hard-coded there: https://github.com/mathieu-benoit/my-kubernetes-deployments/tree/main/namespaces/asm-ingress/ingress.yaml
 gcloud compute addresses create $staticIpName \
     --global
 gcloud compute addresses describe $staticIpName \
@@ -116,7 +116,7 @@ gcloud compute addresses describe $staticIpName \
     --format "value(address)"
 # Grab that IP address to setup the DNS entries.
 
-# Provision infra specifically per apps (istio-ingress, myblog, onlineboutique, bankofanthos) before doing the config sync section below
+# Provision infra specifically per apps (asm-ingress, myblog, onlineboutique, bankofanthos) before doing the config sync section below
 
 # Config Sync
 gcloud beta container hub config-management enable
