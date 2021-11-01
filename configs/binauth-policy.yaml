@@ -6,6 +6,7 @@ admissionWhitelistPatterns:
 - namePattern: k8s.gcr.io/metrics-server/metrics-server:*
 - namePattern: gcr.io/kubebuilder/kube-rbac-proxy:*
 - namePattern: k8s.gcr.io/serve_hostname:*
+- namePattern: gcr.io/config-management-release/hydration-controller:*
 defaultAdmissionRule:
   enforcementMode: ENFORCED_BLOCK_AND_AUDIT_LOG
   evaluationMode: ALWAYS_DENY
