@@ -7,8 +7,6 @@ Based mostly on [Hardening your cluster's security](https://cloud.google.com/kub
 ## Prerequisities
 
 - Install `gcloud`
-- Install `terraform`
-- Install `helm`
 - Install `kubectl`
 - Install `docker`
 
@@ -33,15 +31,6 @@ gcloud beta billing projects link $projectId \
     --billing-account $billingAccountId
 ```
 
-## By `terraform`
-
-```
-cd tf
-terraform init
-terraform plan -var project_id=$projectId
-terraform apply -auto-approve
-```
-
 ## By `bash` script
 
 ```
@@ -52,17 +41,17 @@ cd cli
 Here are the exhaustive list of the security best practices with your GKE clusters you should look at:
 - [X] [Use least privilege Google service accounts](https://cloud.google.com/kubernetes-engine/docs/how-to/hardening-your-cluster#use_least_privilege_sa)
 - [ ] [Creating a Private cluster](https://cloud.google.com/kubernetes-engine/docs/how-to/private-clusters)
-- [ ] [Adding authorized networks for cluster master access](https://cloud.google.com/kubernetes-engine/docs/how-to/authorized-networks)
+- [X] [Adding authorized networks for cluster master access](https://cloud.google.com/kubernetes-engine/docs/how-to/authorized-networks)
 - [X] [Nodes auto-upgrades](https://cloud.google.com/kubernetes-engine/docs/concepts/node-auto-upgrades)
 - [X] [Container-Optimized OS](https://cloud.google.com/container-optimized-os/docs/concepts/features-and-benefits)
 - [X] [Using Shielded GKE Nodes](https://cloud.google.com/kubernetes-engine/docs/how-to/shielded-gke-nodes)
 - [ ] [RBAC](https://cloud.google.com/kubernetes-engine/docs/how-to/role-based-access-control)
 - [X] [Enable network policy](https://cloud.google.com/kubernetes-engine/docs/how-to/network-policy)
 - [X] [Enable Workload Identity](https://cloud.google.com/kubernetes-engine/docs/how-to/workload-identity)
-- [ ] [Enable Binary Authorization](https://cloud.google.com/binary-authorization/docs/overview)
+- [X] [Enable Binary Authorization](https://cloud.google.com/binary-authorization/docs/overview)
 - [X] [Enable Vulnerability scanning on container registry](https://cloud.google.com/container-registry/docs/vulnerability-scanning)
 - [ ] [Application-layer Secrets Encryption](https://cloud.google.com/kubernetes-engine/docs/how-to/encrypting-secrets)
-- [ ] [(alpha) Using network policy logging with Dataplane V2/eBPF](https://cloud.google.com/kubernetes-engine/docs/how-to/network-policy-logging)
+- [X] [Using network policy logging with Dataplane V2/eBPF](https://cloud.google.com/kubernetes-engine/docs/how-to/network-policy-logging)
 - [X] [(beta) Confidential VMs](https://cloud.google.com/blog/products/identity-security/introducing-google-cloud-confidential-computing-with-confidential-vms)
 
 Here are actions you may want to do once your GKE clusters are deployed to help solidify your security posture:
