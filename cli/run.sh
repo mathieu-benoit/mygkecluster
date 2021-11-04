@@ -31,6 +31,7 @@ gcloud container binauthz policy import ../configs/binauth-policy.yaml
 
 ## Create GKE cluster
 gcloud services enable container.googleapis.com
+gcloud services enable containerfilesystem.googleapis.com
 # Delete the default compute engine service account if you don't have have the Org policy iam.automaticIamGrantsForDefaultServiceAccounts in place
 projectNumber="$(gcloud projects describe $projectId --format='get(projectNumber)')"
 gcloud iam service-accounts delete $projectNumber-compute@developer.gserviceaccount.com --quiet
@@ -63,7 +64,8 @@ gcloud beta container clusters create $clusterName \
     --cluster-ipv4-cidr '/20' \
     --enable-vertical-pod-autoscaling \
     --enable-master-authorized-networks \
-    --master-authorized-networks $myIpAddress/32
+    --master-authorized-networks $myIpAddress/32 \
+    --enable-image-streaming
 
 # Update to latest version of the current channel
 newVersion=FIXME
