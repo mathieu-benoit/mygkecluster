@@ -33,7 +33,7 @@ gcloud container binauthz policy import ../configs/binauth-policy.yaml
 gcloud services enable container.googleapis.com
 gcloud services enable containerfilesystem.googleapis.com
 # Delete the default compute engine service account if you don't have have the Org policy iam.automaticIamGrantsForDefaultServiceAccounts in place
-projectNumber="$(gcloud projects describe $projectId --format='get(projectNumber)')"
+projectNumber=$(gcloud projects describe $projectId --format='get(projectNumber)')
 gcloud iam service-accounts delete $projectNumber-compute@developer.gserviceaccount.com --quiet
 # Get local IP address to get access to the Kubernetes API (I'm on Crostini)
 myIpAddress=$(curl ifconfig.co)
