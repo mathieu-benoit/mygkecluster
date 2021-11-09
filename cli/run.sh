@@ -91,7 +91,8 @@ chmod +x ~/asmcli
   --cluster_name $clusterName \
   --cluster_location $zone \
   --enable-all \
-  --option cloud-tracing
+  --option cloud-tracing \
+  --option cni-gcp
 
 # Cloud Armor for the ASM Ingress Gateway
 securityPolicyName=$clusterName-asm-ingressgateway # Name hard-coded there: https://github.com/mathieu-benoit/my-kubernetes-deployments/tree/main/namespaces/asm-ingress/backendconfig.yaml
