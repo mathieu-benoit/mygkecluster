@@ -2,7 +2,9 @@ applySpecVersion: 1
 spec:
   policyController:
     enabled: true
-    templateLibraryInstalled: true
+    templateLibraryInstalled: false
+    referentialRulesEnabled: false
+    logDeniesEnabled: false
   configSync:
     enabled: true
     sourceFormat: hierarchy
