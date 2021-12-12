@@ -103,6 +103,11 @@ gcloud compute security-policies rules create 1000 \
     --expression "evaluatePreconfiguredExpr('xss-stable')" \
     --action "deny-403" \
     --description "XSS attack filtering"
+gcloud compute security-policies rules create 12345 \
+    --security-policy $securityPolicyName \
+    --expression "evaluatePreconfiguredExpr('cve-canary')" \
+    --action "deny-403" \
+    --description "CVE-2021-44228"
 gcloud compute security-policies update $securityPolicyName \
     --enable-layer7-ddos-defense
 sslPolicyName=$securityPolicyName # Name hard-coded there: https://github.com/mathieu-benoit/my-kubernetes-deployments/tree/main/namespaces/asm-ingress/frontendconfig.yaml
