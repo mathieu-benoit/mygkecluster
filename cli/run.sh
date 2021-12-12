@@ -130,4 +130,5 @@ gcloud compute addresses describe $staticIpName \
 gcloud beta container hub config-management enable
 gcloud beta container hub config-management apply \
   --membership $clusterName \
+  --version 1.10 \
   --config ../configs/configsync-config.yaml
