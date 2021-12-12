@@ -84,7 +84,7 @@ gcloud container hub memberships register $clusterName \
     --enable-workload-identity
 
 # ASM
-curl https://storage.googleapis.com/csm-artifacts/asm/asmcli_1.11 > ~/asmcli
+curl https://storage.googleapis.com/csm-artifacts/asm/asmcli_1.12 > ~/asmcli
 chmod +x ~/asmcli
 ~/asmcli install \
   --project_id $projectId \
