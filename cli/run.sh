@@ -121,6 +121,8 @@ gcloud compute security-policies rules create 12345 \
     --description "CVE-2021-44228"
 gcloud compute security-policies update $securityPolicyName \
     --enable-layer7-ddos-defense
+gcloud compute security-policies update $securityPolicyName \
+    --log-level=VERBOSE
 sslPolicyName=$securityPolicyName # Name hard-coded there: https://github.com/mathieu-benoit/my-kubernetes-deployments/tree/main/namespaces/asm-ingress/frontendconfig.yaml
 gcloud compute ssl-policies create $sslPolicyName \
     --profile COMPATIBLE  \
