@@ -118,7 +118,7 @@ gcloud compute security-policies rules create 12345 \
     --security-policy $securityPolicyName \
     --expression "evaluatePreconfiguredExpr('cve-canary')" \
     --action "deny-403" \
-    --description "CVE-2021-44228"
+    --description "CVE-2021-44228 and CVE-2021-45046"
 gcloud compute security-policies update $securityPolicyName \
     --enable-layer7-ddos-defense
 gcloud compute security-policies update $securityPolicyName \
