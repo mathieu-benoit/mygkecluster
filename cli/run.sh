@@ -86,24 +86,15 @@ gcloud container hub memberships register $clusterName \
 # ASM
 curl https://storage.googleapis.com/csm-artifacts/asm/asmcli_1.12 > ~/asmcli
 chmod +x ~/asmcli
-cat <<EOF > distroless-proxy.yaml
----
-apiVersion: install.istio.io/v1alpha1
-kind: IstioOperator
-spec:
-  meshConfig:
-    defaultConfig:
-      image:
-        imageType: distroless
-EOF
+gcloud container hub mesh enable
 ~/asmcli install \
   --project_id $projectId \
   --cluster_name $clusterName \
   --cluster_location $zone \
   --enable-all \
-  --option cloud-tracing \
-  --option cni-gcp \
-  --custom_overlay distroless-proxy.yaml
+  --managed \
+  --channel rapid \
+  --use_managed_cni
 
 # Cloud Armor for the ASM Ingress Gateway
 securityPolicyName=$clusterName-asm-ingressgateway # Name hard-coded there: https://github.com/mathieu-benoit/my-kubernetes-deployments/tree/main/namespaces/asm-ingress/backendconfig.yaml
