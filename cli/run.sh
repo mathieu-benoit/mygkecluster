@@ -105,6 +105,21 @@ gcloud compute security-policies rules create 1000 \
     --expression "evaluatePreconfiguredExpr('xss-stable')" \
     --action "deny-403" \
     --description "XSS attack filtering"
+gcloud compute security-policies rules create 2000 \
+    --security-policy $securityPolicyName \
+    --expression "evaluatePreconfiguredExpr('sqli-stable')" \
+    --action "deny-403" \
+    --description "SQL injection"
+gcloud compute security-policies rules create 3000 \
+    --security-policy $securityPolicyName \
+    --expression "evaluatePreconfiguredExpr('lfi-stable')" \
+    --action "deny-403" \
+    --description "Local file inclusion"
+gcloud compute security-policies rules create 4000 \
+    --security-policy $securityPolicyName \
+    --expression "evaluatePreconfiguredExpr('rfi-stable')" \
+    --action "deny-403" \
+    --description "Remote file inclusion"
 gcloud compute security-policies rules create 12345 \
     --security-policy $securityPolicyName \
     --expression "evaluatePreconfiguredExpr('cve-canary')" \
