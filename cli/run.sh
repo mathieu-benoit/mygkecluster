@@ -105,6 +105,11 @@ gcloud compute security-policies rules create 1000 \
     --expression "evaluatePreconfiguredExpr('xss-stable')" \
     --action "deny-403" \
     --description "XSS attack filtering"
+gcloud compute security-policies rules create 2000 \
+    --security-policy $securityPolicyName \
+    --expression "evaluatePreconfiguredExpr('sqli-stable', ['owasp-crs-v030001-id942251-sqli', 'owasp-crs-v030001-id942420-sqli', 'owasp-crs-v030001-id942431-sqli', 'owasp-crs-v030001-id942460-sqli', 'owasp-crs-v030001-id942421-sqli', 'owasp-crs-v030001-id942432-sqli'])" \
+    --action "deny-403" \
+    --description "SQL injection levels 1 and 2"
 gcloud compute security-policies rules create 3000 \
     --security-policy $securityPolicyName \
     --expression "evaluatePreconfiguredExpr('lfi-stable')" \
