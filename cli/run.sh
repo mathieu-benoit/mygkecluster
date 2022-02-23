@@ -65,7 +65,8 @@ gcloud beta container clusters create $clusterName \
     --enable-vertical-pod-autoscaling \
     --enable-master-authorized-networks \
     --master-authorized-networks $myIpAddress/32 \
-    --enable-image-streaming
+    --enable-image-streaming \
+    --labels mesh_id=proj-${PROJECT_NUMBER}
 
 # Update to latest version of the current channel
 newVersion=FIXME
@@ -84,17 +85,11 @@ gcloud container hub memberships register $clusterName \
     --enable-workload-identity
 
 # ASM
-curl https://storage.googleapis.com/csm-artifacts/asm/asmcli_1.12 > ~/asmcli
-chmod +x ~/asmcli
+gcloud services enable mesh.googleapis.com
 gcloud container hub mesh enable
-~/asmcli install \
-  --project_id $projectId \
-  --cluster_name $clusterName \
-  --cluster_location $zone \
-  --enable-all \
-  --managed \
-  --channel rapid \
-  --use_managed_cni
+gcloud alpha container hub mesh update \
+     --control-plane automatic \
+     --membership $clusterName
 
 # Cloud Armor for the ASM Ingress Gateway
 securityPolicyName=$clusterName-asm-ingressgateway # Name hard-coded there: https://github.com/mathieu-benoit/my-kubernetes-deployments/tree/main/namespaces/asm-ingress/backendconfig.yaml
