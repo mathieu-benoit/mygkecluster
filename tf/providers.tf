@@ -3,7 +3,7 @@ terraform {
         # https://registry.terraform.io/providers/hashicorp/google/latest/docs/guides/provider_reference
         google = {
           source  = "hashicorp/google"
-          version = "4.5.0"
+          version = "4.17.0"
         }
 
         google-beta = {
